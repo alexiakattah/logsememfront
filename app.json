@@ -1,0 +1,31 @@
+{
+  "expo": {
+    "name": "appsemem",
+    "slug": "appsemem",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "description": "",
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./local/assets/notification-icon.png",
+          "color": "#ffffff",
+          "sounds": [
+            "./local/assets/notification-sound.wav",
+            "./local/assets/notification-sound-other.wav"
+          ]
+        }
+      ]
+    ],
+    "android": {
+      "package": "com.alexiakattah.appsemem"
+    }
+  },
+  "name": "appsemem",
+  "android": {
+    "googleServicesFile": "./google-services.json"
+  }
+}

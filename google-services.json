@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "778448237603",
+    "firebase_url": "https://appsemem-default-rtdb.firebaseio.com",
+    "project_id": "appsemem",
+    "storage_bucket": "appsemem.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:778448237603:android:e292534989a7202a816d96",
+        "android_client_info": {
+          "package_name": "com.appsemem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "778448237603-aj5a5tuhgojmo77pig43ldkkkgtf660o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArkR321Nxm8uX9mxpSxLV96rORRycBn9Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "778448237603-aj5a5tuhgojmo77pig43ldkkkgtf660o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

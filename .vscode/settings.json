@@ -1,0 +1,12 @@
+{
+  "editor.autoClosingBrackets": "always",
+  "editor.autoClosingQuotes": "always",
+  "editor.autoClosingDelete": "always",
+  "editor.autoClosingOvertype": "always",
+  "[javascript]": {
+
+    "editor.autoClosingBrackets": "always"
+  },
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": true,
+  "javascript.format.insertSpaceBeforeFunctionParenthesis": true
+}
