@@ -32,6 +32,8 @@ import { ReserveConfirmed } from '../screens/Egua/ReserveConfirmed'
 import { MyReservesEgua } from '../screens/Egua/MyReservesEgua'
 import { ReserveDetailsEgua } from '../screens/Egua/ReserveDetailsEgua'
 import { CameraQrCode } from '../components/CameraQrCode'
+import { FormsPaymentHaras } from '../screens/Haras/FormsPaymentHaras'
+import { EditVeterinarian } from '../screens/Haras/EditVeterinarian'
 const { Navigator, Screen } = createBottomTabNavigator()
 
 function HomeTabs({ navigation, route }: any) {
@@ -342,6 +344,38 @@ export function AppRoutes() {
               fontSize: RFPercentage(3),
             },
             title: 'Animais',
+          }}
+        />
+        <Stack.Screen
+          name='FormsPaymentHaras'
+          component={FormsPaymentHaras}
+          options={{
+            headerStyle: {
+              backgroundColor: theme.colors.header,
+              height: RFPercentage(15),
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontFamily: theme.fonts.medium,
+              fontSize: RFPercentage(3),
+            },
+            title: 'Formas de recebimento',
+          }}
+        />
+        <Stack.Screen
+          name='EditVeterinarian'
+          component={EditVeterinarian}
+          options={{
+            headerStyle: {
+              backgroundColor: theme.colors.header,
+              height: RFPercentage(15),
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontFamily: theme.fonts.medium,
+              fontSize: RFPercentage(3),
+            },
+            title: 'Editar Veterinário',
           }}
         />
       </Stack.Navigator>

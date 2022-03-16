@@ -6,6 +6,7 @@ import { Signin } from '../screens/Signin'
 import { Welcome } from '../screens/Welcome'
 import { Register } from '../screens/Register'
 import { RegisterEgua } from '../screens/RegisterEgua'
+import { RegisterCavalo } from '../screens/RegisterCavalo'
 
 
 const Stack = createStackNavigator()
@@ -50,6 +51,18 @@ export function AuthRoutes({navigation, route}: any){
       <Stack.Screen 
       name="RegisterEgua"
       component={RegisterEgua}
+      
+      options={{
+        cardStyle:{
+          backgroundColor: '#ffff',
+       
+        },
+        gestureEnabled: false,
+       }}
+      />
+      <Stack.Screen 
+      name="RegisterCavalo"
+      component={RegisterCavalo}
       
       options={{
         cardStyle:{

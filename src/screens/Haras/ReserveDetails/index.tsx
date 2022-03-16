@@ -59,7 +59,7 @@ export function ReserveDetails({ route }: any) {
     async function loadReserveDetails() {
       await getUserWhoRequestedReserve(reserveDetails)
     }
-
+    console.log(endDate, now)
     loadReserveDetails()
   }, [])
   const onRefresh = useCallback(() => {

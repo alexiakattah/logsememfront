@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {
   Container,
   NameHaras,
@@ -23,11 +23,26 @@ import card from '../../../assets/images/card.png'
 
 import { useRegister } from '../../../hooks/useRegister'
 import { useAuth } from '../../../hooks/useAuth'
+import { RefreshControl } from 'react-native'
 
 export function MyData({ navigation }: any) {
   const { getCreditCards, dataResponseCreditCards } = useRegister()
   const { user } = useAuth()
+  const [refreshing, setRefreshing] = useState(false)
+  const onRefresh = useCallback(() => {
+    setRefreshing(true)
 
+    async function loadReserves() {
+     user
+    }
+
+    loadReserves()
+
+    wait(2000).then(() => setRefreshing(false))
+  }, [])
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout))
+  }
   useEffect(() => {
     async function loadCreditCards() {
       await getCreditCards()
@@ -36,7 +51,9 @@ export function MyData({ navigation }: any) {
     loadCreditCards()
   }, [])
   return (
-    <Container>
+    <Container refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    }>
       {/* <Header>
         <Text>Veterinários</Text>
       </Header> */}

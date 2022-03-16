@@ -1,6 +1,7 @@
 import styled from 'styled-components/native'
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize'
-export const Container = styled.View`
+import { RectButton } from 'react-native-gesture-handler'
+export const Container = styled.ScrollView`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.background};
 `
@@ -80,7 +81,7 @@ export const Icon = styled.View`
   justify-content: flex-end;
 `
 export const Name = styled.View``
-export const Options = styled.View`
+export const Options =  styled(RectButton)`
   flex-direction: row;
   margin-left: ${RFPercentage(4)}px;
   margin-right: ${RFPercentage(4)}px;

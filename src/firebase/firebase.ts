@@ -3,25 +3,25 @@ import 'firebase/auth'
 import 'firebase/database'
 
 const normalConfig = {
-  apiKey: 'AIzaSyBjlMX6-kkk5QBPwW1d1mVQQRmBxnM80GU',
-  authDomain: 'appsemem.firebaseapp.com',
-  databaseURL: 'https://appsemem-default-rtdb.firebaseio.com',
-  projectId: 'appsemem',
-  storageBucket: 'appsemem.appspot.com',
-  messagingSenderId: '778448237603',
-  appId: '1:778448237603:web:e1e43101f775e289816d96',
+  apiKey: "AIzaSyBPK3_AsfbkL78rSqd8eA-7x4hx20ps5g4",
+  authDomain: "appsemem-5aa83.firebaseapp.com",
+  databaseURL: "https://appsemem-5aa83-default-rtdb.firebaseio.com",
+  projectId: "appsemem-5aa83",
+  storageBucket: "appsemem-5aa83.appspot.com",
+  messagingSenderId: "102020443598",
+  appId: "1:102020443598:web:319df24574965275e44f9f"
 }
 
 // Api de Homologação
 
 const homApiConfig = {
-  apiKey: 'AIzaSyBjlMX6-kkk5QBPwW1d1mVQQRmBxnM80GU',
-  authDomain: 'appsemem.firebaseapp.com',
-  databaseURL: 'https://appsemem-default-rtdb.firebaseio.com',
-  projectId: 'appsemem',
-  storageBucket: 'appsemem.appspot.com',
-  messagingSenderId: '778448237603',
-  appId: '1:778448237603:web:e1e43101f775e289816d96',
+  apiKey: "AIzaSyBPK3_AsfbkL78rSqd8eA-7x4hx20ps5g4",
+  authDomain: "appsemem-5aa83.firebaseapp.com",
+  databaseURL: "https://appsemem-5aa83-default-rtdb.firebaseio.com",
+  projectId: "appsemem-5aa83",
+  storageBucket: "appsemem-5aa83.appspot.com",
+  messagingSenderId: "102020443598",
+  appId: "1:102020443598:web:319df24574965275e44f9f"
 }
 
 let config = normalConfig

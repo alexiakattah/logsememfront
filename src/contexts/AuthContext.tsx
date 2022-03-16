@@ -186,6 +186,43 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
       }
     })
   }
+  async function registerUserCavalo(
+    nameAnimal: string,
+    nameResponsible: string,
+    numberRegister: number,
+    email: string,
+    password: string,
+  ) {
+    return new Promise(async (resolve, reject) => {
+      setLoadingRegister(true)
+      setStatusRegister('Cadastrando...')
+      try {
+        let user = {
+          nameAnimal,
+          nameResponsible,
+          numberRegister,
+          email,
+          password,
+        }
+        let parameters = {
+          user,
+          typeUser: 'registerEgua',
+        }
+        const { data } = await api.post(`/createUser`, parameters)
+
+        if (data.success) {
+          setLoadingRegister(false)
+          setStatusRegister('Cadastrar')
+          resolve(data)
+        } else {
+          setStatusRegister('Cadastrar')
+          Alert.alert(`Atenção`, `${data.message}`, [{ text: 'OK' }])
+        }
+      } catch (error) {
+        console.log('error: register', error)
+      }
+    })
+  }
 
   async function loginUser(email: string, password: string) {
     return new Promise<UserAuthProps | undefined>(async (resolve, reject) => {
@@ -259,6 +296,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
         signOut,
         dataUser,
         setDataUser,
+        registerUserCavalo,
         updateUser,
         getDataUser,
       }}

@@ -16,10 +16,10 @@ export function Register({ navigation }: any) {
         <Logo source={logo} />
       </ContainerImage>
       <Welcome>Selecione o tipo de cadastro </Welcome>
-      <Text>Lorem ipsum dolor sit amet</Text>
+      <Text>Você é proprietário de uma égua ou cavalo?</Text>
       <Button
         title='Cavalo'
-        onPress={() => navigation.navigate('NewUser')}
+        onPress={() => navigation.navigate('RegisterCavalo')}
       ></Button>
       <Button
         title='Égua'

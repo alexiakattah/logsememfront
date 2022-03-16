@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
-import { Keyboard, View, TouchableWithoutFeedback } from 'react-native'
+import { Keyboard, View, TouchableWithoutFeedback, Platform } from 'react-native'
 import AppLoading from 'expo-app-loading'
 import * as Location from 'expo-location'
 import { InputForm } from '../../../components/Forms/InputForm'
 import { Feather } from '@expo/vector-icons'
 import * as Yup from 'yup'
+import Constants from 'expo-constants'
+import * as Notifications from 'expo-notifications'
 import * as _ from 'underscore'
 import {
   Container,
@@ -28,7 +30,8 @@ import { useForm } from 'react-hook-form'
 import { useAuth } from '../../../hooks/useAuth'
 import { useRegister } from '../../../hooks/useRegister'
 import { useEffect } from 'react'
-
+import { db } from '../../../firebase/firebase'
+import { auth } from '../../../firebase'
 interface FormData {
   search: string
 }
@@ -77,6 +80,51 @@ export function ListAnimals({ navigation }) {
   async function findAnimal(form: FormData) {
     const result = await findAnimals(form.search)
   }
+  useEffect(() => {
+    ;(() => registerForPushNotificationsAsync())()
+  }, [])
+  async function registerForPushNotificationsAsync() {
+    let token
+    if (Constants.isDevice) {
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync()
+      let finalStatus = existingStatus
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync()
+        finalStatus = status
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!')
+        return
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data
+      console.log(token)
+    } else {
+      alert('Must use physical device for Push Notifications')
+    }
+
+    if (token) {
+    
+        const authUser = await auth.getAuthUser()
+        console.log('entrou aqui', token)
+        if (authUser) {
+          await db.ref(`Users/${authUser.uid}`).update({fcmToken:token})
+              .then((res) => console.log('res', res))
+              .catch((e) => console.log(e))
+        }
+  
+    }
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      })
+    }
+
+    return token
+  }
 
   const theme = useTheme()
   return (
@@ -84,7 +132,7 @@ export function ListAnimals({ navigation }) {
       <Container>
         <View>
           <InputForm
-            placeholder='Numero do registro'
+            placeholder='Numero do registro ou nome do animal'
             name='search'
             control={control}
             error={errors.search && errors.search.message}

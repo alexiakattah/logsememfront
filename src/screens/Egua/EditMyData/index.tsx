@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { TouchableWithoutFeedback, Keyboard, Alert } from 'react-native'
+import { TouchableWithoutFeedback, Keyboard, Alert, RefreshControl } from 'react-native'
 import { RadioButton } from 'react-native-paper'
 import {
   Container,
@@ -71,6 +71,7 @@ export function EditMyData({ navigation }: any) {
   const [neighborhood, setNeighborhood] = useState('')
   const [city, setCity] = useState('')
   const [state, setState] = useState('')
+  const [refreshing, setRefreshing] = useState(false)
   const {
     control,
     handleSubmit,
@@ -132,6 +133,20 @@ export function EditMyData({ navigation }: any) {
         Alert.alert('Atenção', 'Erro ao buscar o CEP.')
       })
   }
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout))
+  }
+  const onRefresh = useCallback(() => {
+    setRefreshing(true)
+
+    async function loadReserves() {
+      user
+    }
+
+    loadReserves()
+
+    wait(2000).then(() => setRefreshing(false))
+  }, [])
 
   function maskCPF(mask) {
     return mask
@@ -143,8 +158,10 @@ export function EditMyData({ navigation }: any) {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <Container>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
+      <Container refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    }>
         <Title>Atualizar Informações</Title>
 
         <DivMenu horizontal={false}>

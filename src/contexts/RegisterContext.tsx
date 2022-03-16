@@ -24,11 +24,16 @@ interface RegisterContextProps {
     agency: number,
     count: number,
   ) => Promise<unknown>
+  editVeterinarian: (
+   dataVeterinarian: object
+  ) => Promise<unknown>
   statusRegister: string
   searchRegister: string
   getVeterinarians: () => Promise<unknown>
 
+
   getCreditCards: () => Promise<unknown>
+  getCreditCardsHaras: () => Promise<unknown>
   getVeterinarian: (harasId: string) => Promise<unknown>
   findAnimals: (search: string) => Promise<unknown>
   isLoading: boolean
@@ -36,7 +41,7 @@ interface RegisterContextProps {
   dataFindAnimals: DataResponseAnimals | undefined
 
   dataResponseVeterinarians: DataResponseVeterinarians | undefined
-  dataResponseVeterinarian: DataResponseVeterinarian | undefined
+  dataResponseVeterinarian: DataResponseVeterinarian | object
   dataResponseCreditCards: DataResponseCreditCards | undefined
   dataResponseAnimals: DataResponseAnimals | undefined
   registerAnimals: (
@@ -147,6 +152,42 @@ export function RegisterContextProvider(
       }
     })
   }
+  async function editVeterinarian(
+    dataVeterinarian: object
+  ) {
+    return new Promise(async (resolve, reject) => {
+      console.log('aquiiiiiii')
+      setStatusRegister('Atualizando...')
+      try {
+        const authToken = await auth.getAuthUserToken()
+    
+        let parameters = {
+          data: dataVeterinarian,
+          userType: 'registerHaras',
+          searchFunctionality: 'updateVeterinarian',
+          harasId:
+            authenticatedUser && authenticatedUser.uid
+              ? authenticatedUser.uid
+              : '',
+        }
+        const requestConfig = {
+          headers: { Authorization: authToken },
+        }
+        const { data } = await api.post('/update', parameters, requestConfig)
+        if (data.success) {
+          setStatusRegister('Atualizar')
+          Alert.alert(`Sucesso`, `${data.message}`, [{ text: 'OK' }])
+          resolve(data)
+        } else {
+          setStatusRegister('Atualizar')
+          Alert.alert(`Atenção`, `${data.message}`, [{ text: 'OK' }])
+        }
+      } catch (error) {
+        setStatusRegister('Atualizar')
+        reject(error)
+      }
+    })
+  }
   async function registerAnimals(
     name: string,
     register: string,
@@ -239,7 +280,7 @@ export function RegisterContextProvider(
         if (data.success) {
           if (data) {
             setDataResponseVeterinarian(data.data)
-
+console.log('aaaaaaa',dataResponseVeterinarian)
             return
           }
         }
@@ -254,6 +295,37 @@ export function RegisterContextProvider(
         let parameters = {
           searchFunctionality: 'getCreditCards',
           userType: 'egua',
+          userId:
+            authenticatedUser && authenticatedUser.uid
+              ? authenticatedUser.uid
+              : '',
+        }
+        const requestConfig = {
+          headers: { Authorization: authToken },
+        }
+        const { data } = await api.post('/search', parameters, requestConfig)
+
+        if (data.success) {
+          if (data) {
+            setIsLoading(false)
+            setDataResponseCreditCards(data.data)
+            return resolve({ code: 200, success: true })
+          }
+        }
+      } catch (error) {
+        setIsLoading(false)
+        return
+      }
+    })
+  }
+  async function getCreditCardsHaras() {
+    return new Promise(async (resolve, reject) => {
+      const authToken = await auth.getAuthUserToken()
+      setIsLoading(true)
+      try {
+        let parameters = {
+          searchFunctionality: 'getCreditCards',
+          userType: 'haras',
           userId:
             authenticatedUser && authenticatedUser.uid
               ? authenticatedUser.uid
@@ -326,6 +398,10 @@ export function RegisterContextProvider(
           setSearchRegister('Pesquisar')
           setIsLoading(false)
           return
+        }else{
+          setIsLoading(false)
+        setSearchRegister('Pesquisar')
+        Alert.alert(`Atenção`, `Nenhum animal encontrado`, [{ text: 'OK' }])
         }
       } catch (error) {
         setIsLoading(false)
@@ -400,10 +476,11 @@ export function RegisterContextProvider(
       value={{
         registerVeterinarian,
         statusRegister,
-
+        editVeterinarian,
         getVeterinarians,
         getVeterinarian,
         getCreditCards,
+        getCreditCardsHaras,
         getAnimals,
         findAnimals,
         registerAnimals,
@@ -414,6 +491,7 @@ export function RegisterContextProvider(
         dataResponseVeterinarian,
         dataResponseAnimals,
         dataResponseCreditCards,
+        setDataResponseVeterinarian,
         searchRegister,
       }}
     >

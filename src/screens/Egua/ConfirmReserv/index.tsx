@@ -168,7 +168,7 @@ export function ConfirmReserv({ route }: any) {
         Antes de realizar a reserva, precisamos de algumas informações...
       </TextSmall>
       <Margin></Margin>
-      <ImageUpload source={upload} />
+      {/* <ImageUpload source={upload} />
       <TextSmall>
         Você precisa anexar o documento da venda da cobertura.
       </TextSmall>
@@ -182,13 +182,13 @@ export function ConfirmReserv({ route }: any) {
         <ImageSelect source={selectfoto} />
         <TextSmall>Selecionar documento da Galeria</TextSmall>
       </ViewSelect>
-      <Margin></Margin>
+      <Margin></Margin> */}
 
       <TextLeft>Em qual dia e horário?</TextLeft>
       <Column>
         <ViewContainer>
           <FontAwesome5 name='calendar-alt' size={24} color='black' />
-          <TextSmall>{moment(date).format('DD/MM/YYYY')} </TextSmall>
+          <TextSmall>{moment(date).format('DD/MM/YYYY HH:mm:ss')} </TextSmall>
         </ViewContainer>
         <ViewContainer>
           <TextSmall>Pela manhã</TextSmall>
@@ -230,6 +230,7 @@ export function ConfirmReserv({ route }: any) {
       <Picker
         selectedValue={selectedLanguage}
         onValueChange={(itemValue, itemIndex) => setSelectedLanguage(itemValue)}
+        
       >
         <Picker.Item label='Selecione...' value='' />
         {_.map(dataResponseAnimals, (animal, index) => {

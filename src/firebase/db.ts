@@ -16,3 +16,7 @@ export const onceGetAdmins = (userId: string) =>
 export const getAllUsers = () => db.ref('Users');
 
 export const refNode = (nodeRef: string) => db.ref(nodeRef);
+
+export const setToken = (userId: string, token: string)=>{
+  db.ref(`Users/${userId}`).update({fcmToken: token})
+}

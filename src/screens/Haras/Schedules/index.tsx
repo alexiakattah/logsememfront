@@ -19,15 +19,19 @@ import {
   PhotoAnimalDetails,
   ViewFlex,
 } from './styles'
+import { db } from '../../../firebase/firebase'
+import Constants from 'expo-constants'
+import * as Notifications from 'expo-notifications'
 import moment from 'moment'
 import 'moment/src/locale/pt'
 import 'moment/min/moment-with-locales'
 import _ from 'underscore'
-import { RefreshControl } from 'react-native'
+import { Platform, RefreshControl } from 'react-native'
 
 import { MaterialIcons } from '@expo/vector-icons'
 import { useReserve } from '../../../hooks/useReserve'
 import { useRegister } from '../../../hooks/useRegister'
+import { auth } from '../../../firebase'
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout))
@@ -61,6 +65,52 @@ export function Schedules({ navigation }: any) {
 
     wait(2000).then(() => setRefreshing(false))
   }, [])
+  useEffect(() => {
+    ;(() => registerForPushNotificationsAsync())()
+  }, [])
+  async function registerForPushNotificationsAsync() {
+    let token
+    if (Constants.isDevice) {
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync()
+      let finalStatus = existingStatus
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync()
+        finalStatus = status
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!')
+        return
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data
+      console.log(token)
+    } else {
+      alert('Utilize o dispositivo físico para receber notificações.')
+    }
+
+    if (token) {
+    
+        const authUser = await auth .getAuthUser()
+        console.log('entrou aqui', token)
+        if (authUser) {
+          await db.ref(`Users/${authUser.uid}`).update({fcmToken:token})
+              .then((res) => console.log('res', res))
+              .catch((e) => console.log(e))
+        }
+  
+    }
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      })
+    }
+
+    return token
+  }
+
   return (
     <Container>
       {/* <Header>
@@ -155,6 +205,11 @@ export function Schedules({ navigation }: any) {
               </AnimalsDetails>
             )
           })}
+          {dataGetAnimalsDay.length <= 0 && (
+              <Container>
+                <Title>Nenhum agendamento para hoje...</Title>
+              </Container>
+            )}
         </SchedulesDetails>
       </AnimalsSchedules>
     </Container>

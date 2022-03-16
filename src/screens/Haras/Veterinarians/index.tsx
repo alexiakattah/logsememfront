@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {
   Container,
   NameHaras,
@@ -19,10 +19,25 @@ import _ from 'underscore'
 import { MaterialIcons } from '@expo/vector-icons'
 import { Button } from '../../../components/Forms/Button'
 import { useRegister } from '../../../hooks/useRegister'
-
+import { RefreshControl } from 'react-native'
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout))
+}
 export function Veterinarians({ navigation }: any) {
   const { getVeterinarians, dataResponseVeterinarians } = useRegister()
+  const [refreshing, setRefreshing] = useState(false)
 
+  const onRefresh = useCallback(() => {
+    setRefreshing(true)
+
+    async function loadVeterinarians() {
+      getVeterinarians()
+    }
+
+    loadVeterinarians()
+
+    wait(2000).then(() => setRefreshing(false))
+  }, [])
   useEffect(() => {
     async function loadVeterinarians() {
       await getVeterinarians()
@@ -31,7 +46,10 @@ export function Veterinarians({ navigation }: any) {
     loadVeterinarians()
   }, [])
   return (
-    <Container>
+    <Container decelerationRate={0}
+    refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    }>
       {/* <Header>
         <Text>Veterinários</Text>
       </Header> */}
@@ -41,8 +59,10 @@ export function Veterinarians({ navigation }: any) {
         {dataResponseVeterinarians &&
           _.map(dataResponseVeterinarians, (veterinarians: any, index) => {
             return (
-              <Options key={index}>
-                <DivHaras>
+              <Options key={index}onPress={() => navigation.navigate('EditVeterinarian', {
+                veterinarian: veterinarians
+              })} >
+                <DivHaras >
                   <Div>
                     <PhotoHaras
                       source={{

@@ -45,16 +45,15 @@ export function Profile({ navigation }: any) {
           <TextProfile> Veterinários</TextProfile>
           {/* <MaterialIcons name="arrow-forward-ios" size={15} color="#474747" /> */}
         </Options>
-        <Options>
+        {/* <Options>
           <MaterialIcons name='motorcycle' size={24} color='#474747' />
           <TextProfile> Motoboys</TextProfile>
-          {/* <MaterialIcons name="arrow-forward-ios" size={15} color="#474747" /> */}
-        </Options>
-        <Options>
+        </Options> */}
+        {/* <Options onPress={() => navigation.navigate('FormsPaymentHaras')}>
           <MaterialIcons name='credit-card' size={24} color='#474747' />
           <TextProfile> Formas de Recebimento</TextProfile>
-          {/* <MaterialIcons name="arrow-forward-ios" size={15} color="#474747" /> */}
-        </Options>
+       
+        </Options> */}
         <Options onPress={() => navigation.navigate('MyData')}>
           <MaterialIcons name='person-outline' size={24} color='#474747' />
           <TextProfile>Meus Dados</TextProfile>
@@ -66,7 +65,7 @@ export function Profile({ navigation }: any) {
           {/* <MaterialIcons name="arrow-forward-ios" size={15} color="#474747" /> */}
         </Options>
         <Options onPress={signOut}>
-          <FontAwesome5 name='horse-head' size={24} color='#474747' />
+        <MaterialIcons name="logout" size={24} color="#474747" />
           <TextProfile>Sair</TextProfile>
           {/* <MaterialIcons name="arrow-forward-ios" size={15} color="#474747" /> */}
         </Options>

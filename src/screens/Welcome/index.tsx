@@ -13,7 +13,7 @@ export function Welcome({navigation}: any) {
         
       Bem vindo
       </WelcomeText>
-      <Text>Lorem ipsum dolor sit amet</Text>
+      <Text>Faça login ou cadastre-se no nosso app.</Text>
       <ButtonWhite title='Entrar' onPress={()=> navigation.navigate('Signin')}></ButtonWhite>
       <Button title='Cadastre-se'onPress={()=> navigation.navigate('Register')}></Button>
 
