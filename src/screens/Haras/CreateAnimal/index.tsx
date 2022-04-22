@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Platform, Image } from 'react-native'
+import { TextInputMask } from 'react-native-masked-text'
 import {
   Container,
   Text,
@@ -23,6 +24,9 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useAuth } from '../../../hooks/useAuth'
 import { useRegister } from '../../../hooks/useRegister'
 import moment from 'moment'
+import { Picker } from '@react-native-picker/picker'
+import _ from 'underscore'
+import { Input } from '../../../components/Forms/Input'
 
 interface FormData {
   name: string
@@ -44,6 +48,12 @@ const schema = Yup.object().shape({
 export function CreateAnimal() {
   const [image, setImage] = useState<ImageData | null>(null)
   const [urlImage, setUrlImage] = useState('')
+  const [coberturas, setCoberturas] = useState('')
+  const [questions, setQuestions] = useState([])
+  const [formData, setFormData] = useState({
+    amountOfQuestions: 1,
+    questions: [],
+  })
 
   const {
     control,
@@ -54,16 +64,23 @@ export function CreateAnimal() {
   })
 
   const { registerAnimals, statusRegister } = useRegister()
-
+  const auxArray = {}
+  for (let i = 0; i < formData.amountOfQuestions; i++) {
+    auxArray[i] = i
+  }
   const { user } = useAuth()
 
   async function handleFormRegister(form: FormData) {
+    formData.questions = questions
     const data = {
       name: form.name,
       register: form.register,
       urlImage,
+      formData,
     }
-    const result = await registerAnimals(form.name, form.register, urlImage)
+    console.log('formmm', formData)
+
+    const result = await registerAnimals(form.name, form.register, urlImage, formData)
     console.log('data-->', data, result)
   }
 
@@ -139,6 +156,81 @@ export function CreateAnimal() {
     return ref
   }
 
+  formData.amountOfQuestions = formData.amountOfQuestions
+    ? Number(formData.amountOfQuestions)
+    : 1
+
+  function renderQuestion(item: any, index: any, validationCode: string) {
+    questions[index] = questions[index] ? questions[index] : {}
+    console.log('questions', questions)
+
+    return (
+      <Container>
+        <Title>Cobertura {parseInt(index) + parseInt(1)}</Title>
+        <Input
+          value={questions[index].cpf}
+          placeholder='CPF do tutor'
+          onChangeText={(e) =>
+            setQuestions((prevState) => ({
+              ...prevState,
+              [index]: {
+                ...prevState[index],
+                cpf: e,
+              },
+            }))
+          }
+        />
+        <Input
+          value={questions[index].name}
+          placeholder='Nome do tutor'
+          onChangeText={(e) =>
+            setQuestions((prevState) => ({
+              ...prevState,
+              [index]: {
+                ...prevState[index],
+                name: e,
+              },
+            }))
+          }
+        />
+        <Input
+          value={questions[index].fazenda}
+          placeholder='Fazenda'
+          onChangeText={(e) =>
+            setQuestions((prevState) => ({
+              ...prevState,
+              [index]: {
+                ...prevState[index],
+                fazenda: e,
+                validationCode
+              },
+            }))
+          }
+        />
+        {/* <Input
+          placeholder='Código de validação'
+          value={validationCode}
+          editable={false}
+        /> */}
+        <Input
+          value={validationCode}
+          placeholder='Código de validação'
+          editable={false}
+          onChangeText={(e) =>
+            setQuestions((prevState) => ({
+                ...prevState,
+                [index]: {
+                  ...prevState[index],
+                  validationCode: e,
+                },
+            
+            }))
+          }
+        />
+      </Container>
+    )
+  }
+
   return (
     <Container>
       {/* <Header>
@@ -171,7 +263,35 @@ export function CreateAnimal() {
           name='register'
           error={errors.register && errors.register.message}
         />
-
+        <Container>
+          <Picker
+            selectedValue={formData.amountOfQuestions}
+            onValueChange={(itemValue, itemIndex) =>
+              setFormData({ amountOfQuestions: itemValue })
+            }
+          >
+            <Picker.Item label='Número de coberturas...' value='' />
+            <Picker.Item label={`1`} value={1} />
+            <Picker.Item label={`2`} value={2} />
+            <Picker.Item label={`3`} value={3} />
+            <Picker.Item label={`4`} value={4} />
+            <Picker.Item label={`5`} value={5} />
+            <Picker.Item label={`6`} value={6} />
+            <Picker.Item label={`7`} value={7} />
+            <Picker.Item label={`8`} value={8} />
+            <Picker.Item label={`9`} value={9} />
+            <Picker.Item label={`10`} value={10} />
+          </Picker>
+        </Container>
+        <Container>
+          {_.map(auxArray, (item, index) => {
+            let validationCode = Math.random()
+              .toString(16)
+              .slice(2, 12)
+              .toUpperCase()
+            return renderQuestion(item, index, validationCode)
+          })}
+        </Container>
         <Form>
           <Button
             title={statusRegister}

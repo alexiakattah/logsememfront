@@ -94,12 +94,12 @@ export function MyReserves({ navigation }: any) {
                   <TitleAnimal>
                     {reserve.reserve.egua && reserve.reserve.egua.name}
                   </TitleAnimal>
-                  <City>
+                  {/* <City>
                     {reserve.user.street} {reserve.user.number}{' '}
-                  </City>
-                  <City>
+                  </City> */}
+                  {/* <City>
                     {reserve.user.city} {reserve.user.state}
-                  </City>
+                  </City> */}
 
                   <Botuflex>
                     Cavalo:{' '}

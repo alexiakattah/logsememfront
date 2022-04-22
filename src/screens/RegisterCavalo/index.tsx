@@ -20,25 +20,25 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useAuth } from '../../hooks/useAuth'
 
 interface FormData {
-  nameAnimal: string
+  // nameAnimal: string
   nameResponsible: string
-  numberRegister: number
+  // numberRegister: number
   email: string
   password: string
   confirmPassword: string
-  valueBotuflex: number
-  valueNoBotuflex: number
-  agency: number
-  count: number
+  // valueBotuflex: number
+  // valueNoBotuflex: number
+  // agency: number
+  // count: number
 }
 
 const schema = Yup.object().shape({
-  nameAnimal: Yup.string().required('O Nome do animal é obrigatório'),
+  // nameAnimal: Yup.string().required('O Nome do animal é obrigatório'),
   nameResponsible: Yup.string().required('O Nome do responsável é obrigatório'),
 
-  numberRegister: Yup.number()
-    .typeError('Registro composto por número.')
-    .required('O Registro é obrigatório'),
+  // numberRegister: Yup.number()
+  //   .typeError('Registro composto por número.')
+  //   .required('O Registro é obrigatório'),
   email: Yup.string().required('O Email é obrigatório'),
   password: Yup.string().required('A senha é obrigatória'),
 })
@@ -61,9 +61,9 @@ export function RegisterCavalo({ navigation }: any) {
   async function handleFormRegister(form: FormData) {
     console.log('entrou aqui')
     const result = await registerUserCavalo(
-      form.nameAnimal,
+      // form.nameAnimal,
       form.nameResponsible,
-      form.numberRegister,
+      // form.numberRegister,
       form.email,
       form.password
     )
@@ -77,13 +77,13 @@ export function RegisterCavalo({ navigation }: any) {
         </Image>
 
         <Welcome>Cadastro </Welcome>
-        <InputForm
+        {/* <InputForm
           name='nameAnimal'
           error={errors.nameAnimal && errors.nameAnimal.message}
           control={control}
           autoCorrect={false}
           placeholder='Nome do animal'
-        />
+        /> */}
         <InputForm
           name='nameResponsible'
           error={errors.nameResponsible && errors.nameResponsible.message}
@@ -91,13 +91,13 @@ export function RegisterCavalo({ navigation }: any) {
           autoCorrect={false}
           placeholder='Nome do responsável'
         />
-        <InputForm
+        {/* <InputForm
           name='numberRegister'
           error={errors.numberRegister && errors.numberRegister.message}
           control={control}
           autoCorrect={false}
           placeholder='Número do registro'
-        />
+        /> */}
         <InputForm
           name='email'
           error={errors.email && errors.email.message}

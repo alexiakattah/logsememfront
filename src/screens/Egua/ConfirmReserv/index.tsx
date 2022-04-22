@@ -43,12 +43,14 @@ import * as firebase from 'firebase'
 import { useAuth } from '../../../hooks/useAuth'
 import { useRegister } from '../../../hooks/useRegister'
 import { usePayment } from '../../../hooks/usePayment'
+import { Input } from '../../../components/Forms/Input'
 
 export function ConfirmReserv({ route }: any) {
   const { date, animal, itemId } = route.params
   const referencia = useRef<ModalSelector>()
   const [image, setImage] = useState<ImageData | null>(null)
   const [urlImage, setUrlImage] = useState('')
+  const [validationCode, setValidationCode] = useState('')
   const [value, setValue] = useState('')
   const [listValue, setListValue] = useState<string>('')
   const [checked, setChecked] = useState('')
@@ -95,6 +97,7 @@ export function ConfirmReserv({ route }: any) {
       value,
       urlImage,
       selectedLanguage,
+      validationCode
     )
     // if (confirmedReserve) {
     //   navigation.navigate('ReserveConfirmed')
@@ -238,15 +241,18 @@ export function ConfirmReserv({ route }: any) {
         })}
       </Picker>
       <Margin></Margin>
+      <TextLeft>Código de Validação</TextLeft>
+      <Input onChangeText={(e)=>setValidationCode(e)}/>
+      <Margin></Margin>
       <TextLeft>Entregar em</TextLeft>
       <ViewContainerAddress>
         <ImageEndereco source={endereco} />
         <ContainerAddress>
           <TextLeft>{user.nameEstabelecimento}</TextLeft>
-          <TextSmallAddress>
+          {/* <TextSmallAddress>
             {user.street} {user.number}, {user.neighborhood} - {user.city}/
             {user.state}
-          </TextSmallAddress>
+          </TextSmallAddress> */}
         </ContainerAddress>
       </ViewContainerAddress>
       <Margin></Margin>

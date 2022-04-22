@@ -6,7 +6,7 @@ import {useAuth} from '../hooks/useAuth'
 
 export function Routes() {
   const {user} = useAuth()
-  console.log('userrrr',user)
+ 
   return (
     <>
     {user && user.email? <AppRoutes /> :  <AuthRoutes />}

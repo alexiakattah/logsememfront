@@ -19,6 +19,7 @@ interface PaymentContextProps {
     value: string,
     image: string,
     selectedLanguage: object,
+    validationCode: string
   ) => Promise<unknown>
   confirmedReserve: boolean
   statusRegister: string
@@ -42,6 +43,7 @@ export function PaymentContextProvider(props: PaymentContextProviderProps) {
     value: string,
     image: string,
     selectedLanguage: object,
+    validationCode: string
   ) {
     return new Promise(async (resolve, reject) => {
       setStatusRegister('Aguarde...')
@@ -55,6 +57,7 @@ export function PaymentContextProvider(props: PaymentContextProviderProps) {
           value,
           image,
           selectedLanguage,
+          validationCode
         }
 
         let parameters = {

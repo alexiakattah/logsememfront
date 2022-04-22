@@ -48,6 +48,7 @@ interface RegisterContextProps {
     name: string,
     register: string,
     urlImage: string,
+    formData: object
   ) => Promise<unknown>
   createNewCreditCard: (
     cpfTitular: number,
@@ -192,6 +193,7 @@ export function RegisterContextProvider(
     name: string,
     register: string,
     urlImage: string,
+    formData: object
   ) {
     return new Promise(async (resolve, reject) => {
       const authToken = await auth.getAuthUserToken()
@@ -201,6 +203,7 @@ export function RegisterContextProvider(
           name,
           register,
           urlImage,
+          formData
         }
         let parameters = {
           animal,

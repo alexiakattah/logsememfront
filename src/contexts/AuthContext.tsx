@@ -187,9 +187,9 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     })
   }
   async function registerUserCavalo(
-    nameAnimal: string,
+    // nameAnimal: string,
     nameResponsible: string,
-    numberRegister: number,
+    // numberRegister: number,
     email: string,
     password: string,
   ) {
@@ -198,21 +198,22 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
       setStatusRegister('Cadastrando...')
       try {
         let user = {
-          nameAnimal,
+          // nameAnimal,
           nameResponsible,
-          numberRegister,
+          // numberRegister,
           email,
           password,
         }
         let parameters = {
           user,
-          typeUser: 'registerEgua',
+          typeUser: 'registerHaras',
         }
         const { data } = await api.post(`/createUser`, parameters)
 
         if (data.success) {
           setLoadingRegister(false)
           setStatusRegister('Cadastrar')
+          Alert.alert(`Atenção`, `${data.message}`, [{ text: 'OK' }])
           resolve(data)
         } else {
           setStatusRegister('Cadastrar')
@@ -228,6 +229,9 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     return new Promise<UserAuthProps | undefined>(async (resolve, reject) => {
       setLoadingLogin(true)
       setStatusLogin('Entrando...')
+      console.log( email,
+        password,);
+      
       try {
         const responseUserAuth = await auth.doSignInWithEmailAndPassword(
           email,

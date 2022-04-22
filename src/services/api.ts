@@ -10,7 +10,7 @@ function getAPIURL() {
     // ) {
     //   return 'https://us-central1-appsemem.cloudfunctions.net';
   } else {
-    return 'https://us-central1-appsemem-5aa83.cloudfunctions.net'
+    return 'https://us-central1-appsemem.cloudfunctions.net'
   }
 }
 

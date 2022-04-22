@@ -68,8 +68,8 @@ export function CreateCreditCard() {
     )
     console.log(result)
   }
-  function mcc(va){
-    var { name, type, text } = va;
+  function mcc(v){
+    var { name, type, text } = v;
     console.log('vvvv', name, type)
     v=v.replace(/\D/g,"");
     v=v.replace(/^(\d{4})(\d)/g,"$1 $2");
@@ -107,7 +107,7 @@ export function CreateCreditCard() {
             control={control}
             name='number'
             autoCorrect={false}
-            onChange={(e)=>mcc(e)}
+            // onChange={(e)=>mcc(e)}
             keyboardType='numeric'
             placeholder='Número do cartão'
             error={errors.number && errors.number.message}

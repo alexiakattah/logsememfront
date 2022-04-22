@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import _ from 'underscore'
 
 import {
@@ -20,10 +20,13 @@ import {
 import { MaterialIcons } from '@expo/vector-icons'
 import { Button } from '../../../components/Forms/Button'
 import { useRegister } from '../../../hooks/useRegister'
-
+import { RefreshControl } from 'react-native'
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout))
+}
 export function Animals({ navigation }: any) {
   const { getAnimals, dataResponseAnimals } = useRegister()
-
+  const [refreshing, setRefreshing] = useState(false)
   useEffect(() => {
     async function loadAnimals() {
       await getAnimals()
@@ -31,8 +34,23 @@ export function Animals({ navigation }: any) {
     console.log('eddd', dataResponseAnimals)
     loadAnimals()
   }, [])
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true)
+
+    async function loadReserveDetails() {
+      await getAnimals()
+    }
+   
+    loadReserveDetails()
+
+    wait(2000).then(() => setRefreshing(false))
+  }, [])
+
   return (
-    <Container>
+    <Container refreshControl={
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    }>
       {/* <Header>
         <Text>Veterinários</Text>
       </Header> */}
