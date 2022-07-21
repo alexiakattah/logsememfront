@@ -22,6 +22,9 @@
     ],
     "android": {
       "package": "com.alexiakattah.appsemem"
+    },
+    "ios": {
+      "bundleIdentifier": "com.alexiakattah.appsemem"
     }
   },
   "name": "appsemem",

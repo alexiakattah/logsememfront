@@ -33,6 +33,11 @@ interface RegisterContextProps {
 
 
   getCreditCards: () => Promise<unknown>
+  getAnimalEgua: (animalId: string) => Promise<unknown>
+  updateAnimalEgua: (
+    
+    data: object,
+  ) => Promise<unknown>
   getCreditCardsHaras: () => Promise<unknown>
   getVeterinarian: (harasId: string) => Promise<unknown>
   findAnimals: (search: string) => Promise<unknown>
@@ -58,6 +63,10 @@ interface RegisterContextProps {
     nameTitular: string,
     apelido?: string,
     typeCart?: string,
+  ) => Promise<unknown>
+  editCreditCard: (
+    data: object,
+    
   ) => Promise<unknown>
 }
 interface DataResponseVeterinarians {
@@ -100,6 +109,8 @@ export function RegisterContextProvider(
   const [dataResponseCreditCards, setDataResponseCreditCards] =
     useState<DataResponseCreditCards>()
   const [dataResponseAnimals, setDataResponseAnimals] =
+    useState<DataResponseAnimals>()
+  const [datafindAnimalEgua, setDatafindAnimalEgua] =
     useState<DataResponseAnimals>()
 
   async function registerVeterinarian(
@@ -167,6 +178,79 @@ export function RegisterContextProvider(
           userType: 'registerHaras',
           searchFunctionality: 'updateVeterinarian',
           harasId:
+            authenticatedUser && authenticatedUser.uid
+              ? authenticatedUser.uid
+              : '',
+        }
+        const requestConfig = {
+          headers: { Authorization: authToken },
+        }
+        const { data } = await api.post('/update', parameters, requestConfig)
+        if (data.success) {
+          setStatusRegister('Atualizar')
+          Alert.alert(`Sucesso`, `${data.message}`, [{ text: 'OK' }])
+          resolve(data)
+        } else {
+          setStatusRegister('Atualizar')
+          Alert.alert(`Atenção`, `${data.message}`, [{ text: 'OK' }])
+        }
+      } catch (error) {
+        setStatusRegister('Atualizar')
+        reject(error)
+      }
+    })
+  }
+  async function editCreditCard(
+    dataCreditCard: object
+  ) {
+    return new Promise(async (resolve, reject) => {
+      console.log('aquiiiiiii')
+      setStatusRegister('Atualizando...')
+      try {
+        const authToken = await auth.getAuthUserToken()
+    
+        let parameters = {
+          data: dataCreditCard,
+          userType: 'registerEgua',
+          searchFunctionality: 'editCreditCard',
+          userId:
+            authenticatedUser && authenticatedUser.uid
+              ? authenticatedUser.uid
+              : '',
+        }
+        const requestConfig = {
+          headers: { Authorization: authToken },
+        }
+        const { data } = await api.post('/update', parameters, requestConfig)
+        if (data.success) {
+          setStatusRegister('Atualizar')
+          Alert.alert(`Sucesso`, `${data.message}`, [{ text: 'OK' }])
+          resolve(data)
+        } else {
+          setStatusRegister('Atualizar')
+          Alert.alert(`Atenção`, `${data.message}`, [{ text: 'OK' }])
+        }
+      } catch (error) {
+        setStatusRegister('Atualizar')
+        reject(error)
+      }
+    })
+  }
+  async function updateAnimalEgua(
+ 
+    data: object,
+  ) {
+    return new Promise(async (resolve, reject) => {
+      console.log('aquiiiiiii')
+      setStatusRegister('Atualizando...')
+      try {
+        const authToken = await auth.getAuthUserToken()
+    
+        let parameters = {
+          data: datafindAnimalEgua,
+          userType: 'registerEgua',
+          searchFunctionality: 'updateAnimalEgua',
+          userId:
             authenticatedUser && authenticatedUser.uid
               ? authenticatedUser.uid
               : '',
@@ -274,6 +358,33 @@ export function RegisterContextProvider(
               ? authenticatedUser.uid
               : '',
           harasId,
+        }
+        const requestConfig = {
+          headers: { Authorization: authToken },
+        }
+        const { data } = await api.post('/search', parameters, requestConfig)
+
+        if (data.success) {
+          if (data) {
+            setDataResponseVeterinarian(data.data)
+console.log('aaaaaaa',dataResponseVeterinarian)
+            return
+          }
+        }
+      } catch (error) {}
+    })
+  }
+  async function getAnimalEgua(animalId: string) {
+    return new Promise(async (resolve, reject) => {
+      const authToken = await auth.getAuthUserToken()
+      try {
+        let parameters = {
+          searchFunctionality: 'getAnimalEgua',
+          userType: 'registerEgua',
+          userId:
+            authenticatedUser && authenticatedUser.uid
+              ? authenticatedUser.uid
+              : '',
         }
         const requestConfig = {
           headers: { Authorization: authToken },
@@ -492,6 +603,9 @@ console.log('aaaaaaa',dataResponseVeterinarian)
         isLoading,
         dataResponseVeterinarians,
         dataResponseVeterinarian,
+        editCreditCard,
+        getAnimalEgua,
+        updateAnimalEgua,
         dataResponseAnimals,
         dataResponseCreditCards,
         setDataResponseVeterinarian,

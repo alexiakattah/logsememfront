@@ -249,10 +249,10 @@ export function ConfirmReserv({ route }: any) {
         <ImageEndereco source={endereco} />
         <ContainerAddress>
           <TextLeft>{user.nameEstabelecimento}</TextLeft>
-          {/* <TextSmallAddress>
+          <TextSmallAddress>
             {user.street} {user.number}, {user.neighborhood} - {user.city}/
             {user.state}
-          </TextSmallAddress> */}
+          </TextSmallAddress>
         </ContainerAddress>
       </ViewContainerAddress>
       <Margin></Margin>

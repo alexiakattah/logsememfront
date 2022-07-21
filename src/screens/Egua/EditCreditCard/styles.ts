@@ -1,31 +1,8 @@
 import styled from 'styled-components/native'
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize'
-import { RectButton } from 'react-native-gesture-handler'
 export const Container = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.background};
-`
-export const Form = styled.View`
-  justify-content: space-between;
-`
-export const Div = styled.View`
-  justify-content: space-between;
-  flex-direction: row;
-`
-export const DivImage = styled.View`
-  margin: ${RFPercentage(3)}px;
-  margin: ${RFPercentage(3)}px;
-  border-top-left-radius: 50px;
-  border-bottom-left-radius: ${RFValue(50)}px;
-  border-top-right-radius: ${RFValue(50)}px;
-  border-bottom-right-radius: ${RFValue(50)}px;
-`
-export const Image = styled.View`
-  margin: ${RFPercentage(3)}px;
-  border-top-left-radius: ${RFPercentage(50)}px;
-  border-bottom-left-radius: ${RFPercentage(50)}px;
-  border-top-right-radius: ${RFPercentage(50)}px;
-  border-bottom-right-radius: ${RFPercentage(50)}px;
 `
 export const Crmv = styled.Text`
   font-size: 14px;
@@ -42,6 +19,21 @@ export const ButtonRegister = styled.TouchableHighlight`
   margin-top: ${RFPercentage(5)}px;
   border-radius: 25px;
 `
+export const Column = styled.View`
+  flex-direction: row;
+  align-content: center;
+  padding: 5px;
+  align-items: center;
+`
+export const TextSmall = styled.Text`
+  text-align: center;
+  align-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-family: ${({ theme }) => theme.fonts.regular};
+  color: ${({ theme }) => theme.colors.black};
+  padding-left: 8px;
+`
 
 export const NameHaras = styled.Text`
   font-size: 20px;
@@ -54,12 +46,9 @@ export const NameHaras = styled.Text`
 `
 export const DivHaras = styled.View`
   flex-direction: row;
-  justify-content:space-between;
   display: flex;
   align-items: center;
- 
-  padding: ${RFPercentage(1)}px;
-  width: 100%;
+  margin: ${RFPercentage(2)}px;
   /* background-color: blueviolet; */
 `
 export const PhotoHaras = styled.Image`
@@ -100,7 +89,7 @@ export const Icon = styled.View`
   justify-content: flex-end;
 `
 export const Name = styled.View``
-export const Options = styled(RectButton)`
+export const Options = styled.View`
   flex-direction: row;
   margin-left: ${RFPercentage(4)}px;
   margin-right: ${RFPercentage(4)}px;
@@ -119,7 +108,7 @@ export const Title = styled.Text`
   color: ${({ theme }) => theme.colors.text};
   font-family: ${({ theme }) => theme.fonts.medium};
 `
-export const TextProfile = styled.Text`
+export const TextProfile = styled.TextInput`
   font-size: 15px;
   width: 100%;
   /* margin-left: ${RFPercentage(1)}px; */

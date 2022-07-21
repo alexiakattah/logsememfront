@@ -43,7 +43,9 @@ export function FormsPaymentEgua({ navigation }: any) {
         {dataResponseCreditCards &&
           _.map(dataResponseCreditCards, (credtidCart: any, index) => {
             return (
-              <Options key={index}>
+              <Options key={index} onPress={() => navigation.navigate('EditCreditCard', {
+                credtidCart: credtidCart
+              })}>
                 <DivHaras>
                   <Div>
                     <PhotoHaras source={card}></PhotoHaras>

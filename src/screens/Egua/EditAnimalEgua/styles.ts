@@ -1,6 +1,5 @@
 import styled from 'styled-components/native'
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize'
-import { RectButton } from 'react-native-gesture-handler'
 export const Container = styled.View`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.background};
@@ -9,7 +8,7 @@ export const Form = styled.View`
   justify-content: space-between;
 `
 export const Div = styled.View`
-  justify-content: space-between;
+  justify-content: center;
   flex-direction: row;
 `
 export const DivImage = styled.View`
@@ -54,12 +53,9 @@ export const NameHaras = styled.Text`
 `
 export const DivHaras = styled.View`
   flex-direction: row;
-  justify-content:space-between;
   display: flex;
   align-items: center;
- 
-  padding: ${RFPercentage(1)}px;
-  width: 100%;
+  margin: ${RFPercentage(2)}px;
   /* background-color: blueviolet; */
 `
 export const PhotoHaras = styled.Image`
@@ -100,7 +96,7 @@ export const Icon = styled.View`
   justify-content: flex-end;
 `
 export const Name = styled.View``
-export const Options = styled(RectButton)`
+export const Options = styled.View`
   flex-direction: row;
   margin-left: ${RFPercentage(4)}px;
   margin-right: ${RFPercentage(4)}px;
@@ -119,7 +115,7 @@ export const Title = styled.Text`
   color: ${({ theme }) => theme.colors.text};
   font-family: ${({ theme }) => theme.fonts.medium};
 `
-export const TextProfile = styled.Text`
+export const TextProfile = styled.TextInput`
   font-size: 15px;
   width: 100%;
   /* margin-left: ${RFPercentage(1)}px; */

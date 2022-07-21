@@ -24,7 +24,7 @@ import { RefreshControl } from 'react-native'
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout))
 }
-export function Animals({ navigation }: any) {
+export function AnimalsEgua({ navigation }: any) {
   const { getAnimals, dataResponseAnimals } = useRegister()
   const [refreshing, setRefreshing] = useState(false)
   useEffect(() => {
@@ -59,7 +59,9 @@ export function Animals({ navigation }: any) {
         {dataResponseAnimals &&
           _.map(dataResponseAnimals, (animal: any, index: any) => {
             return (
-              <Options key={index}>
+              <Options key={index} onPress={() => navigation.navigate('EditAnimalEgua', {
+                animal: animal
+              })}>
                 <DivHaras>
                   <Div>
                     <PhotoHaras

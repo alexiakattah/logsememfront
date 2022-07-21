@@ -15,6 +15,7 @@ import { Schedules } from '../screens/Haras/Schedules'
 
 import { Veterinarians } from '../screens/Haras/Veterinarians'
 import { Animals } from '../screens/Haras/Animals'
+import { AnimalsEgua } from '../screens/Egua/AnimalsEgua'
 import { CreateAnimal } from '../screens/Haras/CreateAnimal'
 import { CreateVeterinarian } from '../screens/Haras/CreateVeterinarian'
 import { MyReserves } from '../screens/Haras/MyReserves'
@@ -34,6 +35,8 @@ import { ReserveDetailsEgua } from '../screens/Egua/ReserveDetailsEgua'
 import { CameraQrCode } from '../components/CameraQrCode'
 import { FormsPaymentHaras } from '../screens/Haras/FormsPaymentHaras'
 import { EditVeterinarian } from '../screens/Haras/EditVeterinarian'
+import { EditAnimalEgua } from '../screens/Egua/EditAnimalEgua'
+import { EditCreditCard } from '../screens/Egua/EditCreditCard'
 const { Navigator, Screen } = createBottomTabNavigator()
 
 function HomeTabs({ navigation, route }: any) {
@@ -448,6 +451,54 @@ export function AppRoutes() {
               fontSize: RFPercentage(3),
             },
             title: 'Informações',
+          }}
+        />
+        <Stack.Screen
+          name='AnimalsEgua'
+          component={AnimalsEgua}
+          options={{
+            headerStyle: {
+              backgroundColor: theme.colors.header,
+              height: RFPercentage(15),
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontFamily: theme.fonts.medium,
+              fontSize: RFPercentage(3),
+            },
+            title: 'Animais',
+          }}
+        />
+        <Stack.Screen
+          name='EditCreditCard'
+          component={EditCreditCard}
+          options={{
+            headerStyle: {
+              backgroundColor: theme.colors.header,
+              height: RFPercentage(15),
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontFamily: theme.fonts.medium,
+              fontSize: RFPercentage(3),
+            },
+            title: 'Formas de Pagamento',
+          }}
+        />
+        <Stack.Screen
+          name='EditAnimalEgua'
+          component={EditAnimalEgua}
+          options={{
+            headerStyle: {
+              backgroundColor: theme.colors.header,
+              height: RFPercentage(15),
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontFamily: theme.fonts.medium,
+              fontSize: RFPercentage(3),
+            },
+            title: 'Editar Animal',
           }}
         />
         <Stack.Screen

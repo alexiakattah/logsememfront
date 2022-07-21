@@ -1,31 +1,9 @@
 import styled from 'styled-components/native'
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize'
 import { RectButton } from 'react-native-gesture-handler'
-export const Container = styled.View`
+export const Container = styled.ScrollView`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.background};
-`
-export const Form = styled.View`
-  justify-content: space-between;
-`
-export const Div = styled.View`
-  justify-content: space-between;
-  flex-direction: row;
-`
-export const DivImage = styled.View`
-  margin: ${RFPercentage(3)}px;
-  margin: ${RFPercentage(3)}px;
-  border-top-left-radius: 50px;
-  border-bottom-left-radius: ${RFValue(50)}px;
-  border-top-right-radius: ${RFValue(50)}px;
-  border-bottom-right-radius: ${RFValue(50)}px;
-`
-export const Image = styled.View`
-  margin: ${RFPercentage(3)}px;
-  border-top-left-radius: ${RFPercentage(50)}px;
-  border-bottom-left-radius: ${RFPercentage(50)}px;
-  border-top-right-radius: ${RFPercentage(50)}px;
-  border-bottom-right-radius: ${RFPercentage(50)}px;
 `
 export const Crmv = styled.Text`
   font-size: 14px;
@@ -52,15 +30,17 @@ export const NameHaras = styled.Text`
   padding-left: ${RFPercentage(2)}px;
   font-family: ${({ theme }) => theme.fonts.medium};
 `
+export const Div = styled.View`
+  justify-content: space-between;
+  flex-direction: row;
+`
 export const DivHaras = styled.View`
   flex-direction: row;
-  justify-content:space-between;
+  justify-content: space-between;
   display: flex;
   align-items: center;
- 
-  padding: ${RFPercentage(1)}px;
+
   width: 100%;
-  /* background-color: blueviolet; */
 `
 export const PhotoHaras = styled.Image`
   width: ${RFValue(40)}px;
@@ -104,12 +84,12 @@ export const Options = styled(RectButton)`
   flex-direction: row;
   margin-left: ${RFPercentage(4)}px;
   margin-right: ${RFPercentage(4)}px;
-  margin-top: ${RFPercentage(2)}px;
+  margin-top: ${RFPercentage(4)}px;
   border-color: #cbc9d9;
   border-width: 1px;
   border-radius: 5px;
 
-  padding: ${RFPercentage(1)}px;
+  padding: ${RFPercentage(2)}px;
 `
 export const DivMenu = styled.ScrollView``
 export const Title = styled.Text`
@@ -121,8 +101,8 @@ export const Title = styled.Text`
 `
 export const TextProfile = styled.Text`
   font-size: 15px;
-  width: 100%;
-  /* margin-left: ${RFPercentage(1)}px; */
+
+  margin-left: ${RFPercentage(1)}px;
   /* margin-right: ${RFPercentage(29)}px; */
   color: ${({ theme }) => theme.colors.textNormal};
   font-family: ${({ theme }) => theme.fonts.regular};

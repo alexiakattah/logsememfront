@@ -59,7 +59,7 @@ export function ProfileEgua({ navigation }: any) {
           <TextProfile>Formas de Pagamento</TextProfile>
           {/* <MaterialIcons name="arrow-forward-ios" size={15} color="#474747" /> */}
         </Options>
-        <Options onPress={() => navigation.navigate('Animals')}>
+        <Options onPress={() => navigation.navigate('AnimalsEgua')}>
           <FontAwesome5 name='horse-head' size={24} color='#474747' />
           <TextProfile>Animais</TextProfile>
           {/* <MaterialIcons name="arrow-forward-ios" size={15} color="#474747" /> */}
