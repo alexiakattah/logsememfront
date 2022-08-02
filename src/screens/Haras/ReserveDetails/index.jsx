@@ -41,7 +41,7 @@ const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout))
 }
 
-export function ReserveDetails({ route }: any) {
+export function ReserveDetails({ route }) {
   const navigation = useNavigation()
   const { reserveDetails } = route.params
   const [modalVisible, setModalVisible] = useState(false)

@@ -25,7 +25,7 @@ import { useRegister } from '../../../hooks/useRegister'
 import { useAuth } from '../../../hooks/useAuth'
 import { RefreshControl } from 'react-native'
 
-export function MyData({ navigation }: any) {
+export function MyData({ navigation }) {
   const { getCreditCards, dataResponseCreditCards } = useRegister()
   const { user } = useAuth()
   const [refreshing, setRefreshing] = useState(false)
@@ -33,7 +33,7 @@ export function MyData({ navigation }: any) {
     setRefreshing(true)
 
     async function loadReserves() {
-     user
+      user
     }
 
     loadReserves()
@@ -51,9 +51,11 @@ export function MyData({ navigation }: any) {
     loadCreditCards()
   }, [])
   return (
-    <Container refreshControl={
-      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-    }>
+    <Container
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       {/* <Header>
         <Text>Veterinários</Text>
       </Header> */}
@@ -116,7 +118,9 @@ export function MyData({ navigation }: any) {
         <TextTitle>Cidade/Estado</TextTitle>
         <Options>
           <DivHaras>
-            <TextProfile>{`${user.city} - ${user.state}`}</TextProfile>
+            <TextProfile>{`${user.city ? user.city : ''} - ${
+              user.state ? user.state : ''
+            }`}</TextProfile>
           </DivHaras>
         </Options>
 

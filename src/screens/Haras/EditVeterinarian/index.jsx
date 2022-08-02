@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { Banks } from '../../../constants/Bank'
 import NumberFormat from 'react-number-format'
 import _ from 'underscore'
+
 import {
   TouchableWithoutFeedback,
   Keyboard,
@@ -29,19 +30,7 @@ import { useState } from 'react'
 import { useRegister } from '../../../hooks/useRegister'
 import { useAuth } from '../../../hooks/useAuth'
 import { Picker } from '@react-native-picker/picker'
-
-interface FormData {
-  name: string
-  crmv: string
-  cpf: number
-  email: string
-  password: string
-  confirmPassword: string
-  valueBotuflex: number
-  valueNoBotuflex: number
-  agency: number
-  count: number
-}
+import { Box, Select } from 'native-base'
 
 const schema = Yup.object().shape({
   name: Yup.string().required('O Nome é obrigatório'),
@@ -65,7 +54,7 @@ const schema = Yup.object().shape({
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout))
 }
-export function EditVeterinarian({ route }: any) {
+export function EditVeterinarian({ route, navigation }) {
   const [cpf, setCpf] = useState('')
   const [selectedBank, setSelectedBank] = useState('')
   const [refreshing, setRefreshing] = useState(false)
@@ -91,7 +80,7 @@ export function EditVeterinarian({ route }: any) {
     }
 
     loadVeterinarian()
-  }, [console.log(dataResponseVeterinarian)])
+  }, [])
 
   const { user } = useAuth()
   const onRefresh = useCallback(() => {
@@ -111,7 +100,17 @@ export function EditVeterinarian({ route }: any) {
       currency: 'INR',
     }).format(value)
   async function handleRegister() {
-    const result = await editVeterinarian(dataResponseVeterinarian)
+    const result = await editVeterinarian(dataResponseVeterinarian).then(
+      (res) => {
+        console.log(res)
+        if (res.success) {
+          Alert.alert(`Sucesso`, `${res.message}`, [
+            { text: 'OK', onPress: () => navigation.navigate('Veterinários') },
+          ])
+        }
+      },
+    )
+
     console.log(result)
   }
 
@@ -232,8 +231,8 @@ export function EditVeterinarian({ route }: any) {
             /> */}
           </Options>
           <TextTitle>Banco</TextTitle>
-          <Options>
-            <Picker
+          <Box w='full' maxW='500' px={8}>
+            <Select
               selectedValue={dataResponseVeterinarian?.bank}
               onValueChange={(itemValue, itemIndex) =>
                 setDataResponseVeterinarian((prevState) => ({
@@ -242,18 +241,18 @@ export function EditVeterinarian({ route }: any) {
                 }))
               }
             >
-              <Picker.Item label='Selecione o banco...' value='' />
               {_.map(Banks, (animal, index) => {
                 return (
-                  <Picker.Item
+                  <Select.Item
                     key={index}
                     label={`${animal.value} - ${animal.label} `}
-                    value={animal.value +' - '+ animal.label}
+                    value={animal.value + ' - ' + animal.label}
                   />
                 )
               })}
-            </Picker>
-            </Options>
+            </Select>
+          </Box>
+
           <TextTitle>Agência</TextTitle>
           <Options>
             <TextProfile

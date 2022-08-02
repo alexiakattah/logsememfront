@@ -4,7 +4,7 @@ import { BarCodeScanner } from 'expo-barcode-scanner'
 import { useNavigation } from '@react-navigation/native'
 import { useReserve } from '../../hooks/useReserve'
 
-export function CameraQrCode({ route }: any) {
+export function CameraQrCode({ route }) {
   const navigation = useNavigation()
   const { reserveDetails } = route.params
   const [hasPermission, setHasPermission] = useState(null)

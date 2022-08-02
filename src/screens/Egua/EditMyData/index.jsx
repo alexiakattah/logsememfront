@@ -2,7 +2,12 @@ import React, { useCallback, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { TouchableWithoutFeedback, Keyboard, Alert, RefreshControl } from 'react-native'
+import {
+  TouchableWithoutFeedback,
+  Keyboard,
+  Alert,
+  RefreshControl,
+} from 'react-native'
 import { RadioButton } from 'react-native-paper'
 import {
   Container,
@@ -32,16 +37,6 @@ import { useRegister } from '../../../hooks/useRegister'
 import { useAuth } from '../../../hooks/useAuth'
 import { FontAwesome } from '@expo/vector-icons'
 
-interface FormData {
-  cpfTitular: number
-  number: number
-  validate: number
-  cvv: number
-  nameTitular: string
-  typeCart: string
-  apelido?: string
-}
-
 const schema = Yup.object().shape({
   cpfTitular: Yup.number().required('O CRMV é obrigatório'),
 
@@ -59,7 +54,7 @@ const schema = Yup.object().shape({
   // typeCart: Yup.string().required('O Valor com Botuflex é obrigatório'),
 })
 
-export function EditMyData({ navigation }: any) {
+export function EditMyData({ navigation }) {
   const [cep, setCep] = useState('')
   const [typeCart, setTypeCart] = useState('credit')
   const [nameResponsable, setNameResponsable] = useState('')
@@ -90,7 +85,11 @@ export function EditMyData({ navigation }: any) {
   }, [console.log(' cep, setDataUser', dataUser, loadingCep)])
 
   async function handleRegister() {
-    const result = await updateUser(dataUser)
+    const result = await updateUser(dataUser).then((res) => {
+      Alert.alert(`Sucesso`, res.message, [
+        { text: 'OK', onPress: () => navigation.goBack() },
+      ])
+    })
     console.log('result', result)
   }
   function maskCEP(v) {
@@ -158,10 +157,12 @@ export function EditMyData({ navigation }: any) {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} >
-      <Container refreshControl={
-      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-    }>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <Container
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <Title>Atualizar Informações</Title>
 
         <DivMenu horizontal={false}>

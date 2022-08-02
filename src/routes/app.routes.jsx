@@ -39,7 +39,7 @@ import { EditAnimalEgua } from '../screens/Egua/EditAnimalEgua'
 import { EditCreditCard } from '../screens/Egua/EditCreditCard'
 const { Navigator, Screen } = createBottomTabNavigator()
 
-function HomeTabs({ navigation, route }: any) {
+function HomeTabs({ navigation, route }) {
   React.useLayoutEffect(() => {
     navigation.setOptions({ headerTitle: getHeaderTitle(route) })
   }, [navigation, route])
@@ -94,7 +94,7 @@ function HomeTabs({ navigation, route }: any) {
     </Navigator>
   )
 }
-function HomeTabsEgua({ navigation, route }: any) {
+function HomeTabsEgua({ navigation, route }) {
   React.useLayoutEffect(() => {
     navigation.setOptions({ headerTitle: getHeaderTitle(route) })
   }, [navigation, route])
@@ -151,7 +151,7 @@ function HomeTabsEgua({ navigation, route }: any) {
 
 const Stack = createStackNavigator()
 
-function Pages({ navigation, route }: any) {
+function Pages({ navigation, route }) {
   React.useLayoutEffect(() => {
     navigation.setOptions({ headerTitle: getHeaderTitle(route) })
   }, [navigation, route])
@@ -167,7 +167,7 @@ function Pages({ navigation, route }: any) {
   )
 }
 
-function getHeaderTitle(route: any) {
+function getHeaderTitle(route) {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Início'
 
   switch (routeName) {
@@ -183,7 +183,7 @@ function getHeaderTitle(route: any) {
       return 'Veterinários'
   }
 }
-function getHeaderTitleEgua(route: any) {
+function getHeaderTitleEgua(route) {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Início'
 
   switch (routeName) {
@@ -578,7 +578,7 @@ export function AppRoutes() {
               fontFamily: theme.fonts.medium,
               fontSize: RFPercentage(3),
             },
-            title: 'Meus Dados',
+            title: 'Meus cartões',
           }}
         />
         <Stack.Screen

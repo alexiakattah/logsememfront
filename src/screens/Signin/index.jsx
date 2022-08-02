@@ -12,16 +12,14 @@ import { Ionicons } from '@expo/vector-icons'
 
 import { TouchableWithoutFeedback, Keyboard, Alert } from 'react-native'
 import { Button } from '../../components/Forms/Button'
-interface FormData {
-  email: string
-  password: string
-}
+import { VStack } from 'native-base'
+
 const schema = Yup.object().shape({
   email: Yup.string().required('O Email é obrigatório'),
   password: Yup.string().required('A Senha é obrigatória'),
 })
 
-export function Signin({ navigation }: any) {
+export function Signin({ navigation }) {
   const {
     control,
     handleSubmit,
@@ -32,28 +30,24 @@ export function Signin({ navigation }: any) {
 
   const { loginUser, authenticatedUser, statusLogin } = useAuth()
 
-  const handleRegister = async (form: FormData) => {
+  const handleRegister = async (form) => {
     const data = {
       email: form.email,
       senha: form.password,
     }
 
     const responseLoginUser = await loginUser(form.email, form.password)
-    if (responseLoginUser) {
-      console.log('logadooooo')
-    }
   }
 
   useEffect(() => {
     if (authenticatedUser) {
-      console.log('tudo certoooo')
     }
   }, [authenticatedUser])
 
   return (
-    <Container>
+    <VStack px={4}>
       <DivMenu horizontal={false}>
-        <BackButton onPress={() => navigation.navigate('Welcome')}></BackButton>
+        <BackButton onPress={() => navigation.goBack()}></BackButton>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <>
             <ContainerImage>
@@ -85,6 +79,6 @@ export function Signin({ navigation }: any) {
           </>
         </TouchableWithoutFeedback>
       </DivMenu>
-    </Container>
+    </VStack>
   )
 }

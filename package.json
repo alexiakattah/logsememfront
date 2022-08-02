@@ -30,6 +30,7 @@
     "expo-updates": "~0.8.1",
     "firebase": "^8.10.0",
     "moment": "^2.29.1",
+    "native-base": "^3.4.9",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-hook-form": "^7.12.2",

@@ -9,60 +9,17 @@ import { api } from '../services/api'
 import { auth, db, firebase } from '../firebase'
 import { Alert } from 'react-native'
 
-interface UserAuthProps {
-  nameResponsible: string
-  cpf: string
-  cep: string
-  address: string
-  createdAt: number
-  email: string
-  name: string
-  uid: string
-  typeUser: string
-  updatedAt: number
-}
+export const authContext = createContext({})
 
-interface AuthContextProps {
-  loginUser: (
-    email: string,
-    password: string,
-  ) => Promise<UserAuthProps | undefined>
-  registerUserEgua: (
-    nameAnimal: string,
-    nameResponsible: string,
-    numberRegister: number,
-    email: string,
-    password: string,
-  ) => Promise<UserAuthProps | unknown>
-  user: UserAuthProps | undefined
-  dataUser: UserAuthProps | undefined
-  setDataUser: () => {}
-  updateUser: (data: object) => {}
-  statusLogin: string
-  statusRegister: string
-  loadingClientData: boolean
-  loadingLogin: boolean
-  authenticatedUser: firebase.firebase.UserInfo | null
-  loadingAuthenticatedUser: boolean
-  signOut: () => Promise<void>
-  getDataUser: () => Promise<unknown>
-}
-
-export const authContext = createContext({} as AuthContextProps)
-
-interface AuthContextProviderProps {
-  children: ReactNode
-}
-
-export function AuthContextProvider(props: AuthContextProviderProps) {
+export function AuthContextProvider(props) {
   const [loadingClientData, setLoadingClientData] = useState(false)
 
   const [loadingLogin, setLoadingLogin] = useState(false)
   const [loadingRegister, setLoadingRegister] = useState(false)
   const [statusRegister, setStatusRegister] = useState('Cadastrar')
   const [statusLogin, setStatusLogin] = useState('Entrar')
-  const [user, setUser] = useState<UserAuthProps | undefined>()
-  const [dataUser, setDataUser] = useState<UserAuthProps | undefined>()
+  const [user, setUser] = useState()
+  const [dataUser, setDataUser] = useState()
 
   const [authenticatedUser, setAuthenticatedUser] = useState(() => {
     const user = firebase.auth.currentUser
@@ -118,7 +75,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
       }
     })
   }
-  async function updateUser(dataUser: object) {
+  async function updateUser(dataUser) {
     return new Promise(async (resolve, reject) => {
       const authToken = await auth.getAuthUserToken()
 
@@ -139,8 +96,8 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
 
         if (data.success) {
           if (data) {
-            Alert.alert(`Sucesso!`, `${data.message}`, [{ text: 'OK' }])
-            return
+            // Alert.alert(`Sucesso!`, `${data.message}`, [{ text: 'OK' }])
+            return resolve(data)
           }
         }
       } catch (error) {
@@ -150,11 +107,11 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
   }
 
   async function registerUserEgua(
-    nameAnimal: string,
-    nameResponsible: string,
-    numberRegister: number,
-    email: string,
-    password: string,
+    nameAnimal,
+    nameResponsible,
+    numberRegister,
+    email,
+    password,
   ) {
     return new Promise(async (resolve, reject) => {
       setLoadingRegister(true)
@@ -188,10 +145,10 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
   }
   async function registerUserCavalo(
     // nameAnimal: string,
-    nameResponsible: string,
+    nameResponsible,
     // numberRegister: number,
-    email: string,
-    password: string,
+    email,
+    password,
   ) {
     return new Promise(async (resolve, reject) => {
       setLoadingRegister(true)
@@ -225,13 +182,12 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     })
   }
 
-  async function loginUser(email: string, password: string) {
-    return new Promise<UserAuthProps | undefined>(async (resolve, reject) => {
+  async function loginUser(email, password) {
+    return new Promise(async (resolve, reject) => {
       setLoadingLogin(true)
       setStatusLogin('Entrando...')
-      console.log( email,
-        password,);
-      
+      console.log(email, password)
+
       try {
         const responseUserAuth = await auth.doSignInWithEmailAndPassword(
           email,
@@ -247,7 +203,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
             return
           }
           setUser(responseUserAuth.data)
-          resolve(responseUserAuth.data)
+          return resolve(responseUserAuth.data)
         } else {
           setLoadingLogin(false)
           console.log('erroo-->', responseUserAuth)
@@ -277,7 +233,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     })
   }
   async function signOut() {
-    setUser({} as UserAuthProps)
+    setUser({})
     console.log('clicou em sairr')
     auth.doSignOut().then(() => {
       console.log('deu certo')

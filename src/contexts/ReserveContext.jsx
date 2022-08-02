@@ -10,31 +10,9 @@ import { Alert } from 'react-native'
 import { useAuth } from '../hooks/useAuth'
 import { auth } from '../firebase'
 
-interface ReserveContextProps {
-  getReserves: () => Promise<unknown>
-  getReservesEgua: () => Promise<unknown>
-  getAnimalsDay: () => Promise<unknown>
-  cancelReserve: (reserve: object) => Promise<unknown>
-  confirmReserve: (reserve: object) => Promise<unknown>
-  confirmColeta: (reserve: object) => Promise<unknown>
-  getUserWhoRequestedReserve: (reserveDetails: object) => Promise<unknown>
-  dataReserves: DataResponseReserves | undefined
-  dataUserRequestReserve: {} | undefined
-  dataGetAnimalsDay: {} | undefined
-}
+export const reserveContext = createContext({})
 
-interface DataResponseReserves {
-  imageUrl: string
-  name: string
-}
-export const reserveContext = createContext({} as ReserveContextProps)
-interface ReserveContextProviderProps {
-  children: ReactNode
-}
-export function ReserveContextProvider(
-  props: ReserveContextProviderProps,
-  { navigation }: any,
-) {
+export function ReserveContextProvider(props, { navigation }) {
   const { authenticatedUser } = useAuth()
 
   const [statusRegister, setStatusRegister] = useState('Cadastrar')
@@ -70,7 +48,9 @@ export function ReserveContextProvider(
           resolve(data)
         } else {
           setStatusRegister('Cadastrar')
-          Alert.alert(`Atenção`, `${data.message}`, [{ text: 'OK' }])
+          setDataReserves([])
+
+          // Alert.alert(`Atenção`, `${data.message}`, [{ text: 'OK' }])
         }
       } catch (error) {
         setStatusRegister('Cadastrar')
@@ -112,7 +92,7 @@ export function ReserveContextProvider(
       }
     })
   }
-  async function cancelReserve(reserve: object) {
+  async function cancelReserve(reserve) {
     return new Promise(async (resolve, reject) => {
       const authToken = await auth.getAuthUserToken()
       setStatusRegister('Cadastrando...')
@@ -148,7 +128,7 @@ export function ReserveContextProvider(
       }
     })
   }
-  async function confirmReserve(reserve: object) {
+  async function confirmReserve(reserve) {
     return new Promise(async (resolve, reject) => {
       const authToken = await auth.getAuthUserToken()
       setStatusRegister('Aguarde...')
@@ -186,7 +166,7 @@ export function ReserveContextProvider(
       }
     })
   }
-  async function confirmColeta(reserve: string) {
+  async function confirmColeta(reserve) {
     return new Promise(async (resolve, reject) => {
       const authToken = await auth.getAuthUserToken()
       setStatusRegister('Aguarde...')
@@ -223,7 +203,7 @@ export function ReserveContextProvider(
       }
     })
   }
-  async function getUserWhoRequestedReserve(reserveDetails: object) {
+  async function getUserWhoRequestedReserve(reserveDetails) {
     return new Promise(async (resolve, reject) => {
       const authToken = await auth.getAuthUserToken()
       setStatusRegister('Cadastrando...')
@@ -286,7 +266,8 @@ export function ReserveContextProvider(
           resolve(data)
         } else {
           setStatusRegister('Cadastrar')
-          Alert.alert(`Atenção`, `${data.message}`, [{ text: 'OK' }])
+          setDatagetAnimalsDay([])
+          // Alert.alert(`Atenção`, `${data.message}`, [{ text: 'OK' }])
         }
       } catch (error) {
         setStatusRegister('Cadastrar')

@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import {
   Container,
-  Text,
   Header,
   Title,
   AnimalsSchedules,
@@ -32,12 +31,13 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { useReserve } from '../../../hooks/useReserve'
 import { useRegister } from '../../../hooks/useRegister'
 import { auth } from '../../../firebase'
+import { VStack, Text } from 'native-base'
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout))
 }
 
-export function Schedules({ navigation }: any) {
+export function Schedules({ navigation }) {
   const { getAnimalsDay, dataGetAnimalsDay } = useReserve()
   const { getVeterinarians, dataResponseVeterinarians } = useRegister()
   moment.locale('pt-br')
@@ -89,15 +89,15 @@ export function Schedules({ navigation }: any) {
     }
 
     if (token) {
-    
-        const authUser = await auth .getAuthUser()
-        console.log('entrou aqui', token)
-        if (authUser) {
-          await db.ref(`Users/${authUser.uid}`).update({fcmToken:token})
-              .then((res) => console.log('res', res))
-              .catch((e) => console.log(e))
-        }
-  
+      const authUser = await auth.getAuthUser()
+      console.log('entrou aqui', token)
+      if (authUser) {
+        await db
+          .ref(`Users/${authUser.uid}`)
+          .update({ fcmToken: token })
+          .then((res) => console.log('res', res))
+          .catch((e) => console.log(e))
+      }
     }
     if (Platform.OS === 'android') {
       Notifications.setNotificationChannelAsync('default', {
@@ -110,6 +110,7 @@ export function Schedules({ navigation }: any) {
 
     return token
   }
+  console.log('dataGetAnimalsDay', dataGetAnimalsDay)
 
   return (
     <Container>
@@ -155,9 +156,11 @@ export function Schedules({ navigation }: any) {
               )
             })}
             {dataGetAnimalsDay.length <= 0 && (
-              <Container>
-                <Title>Nenhum agendamento para hoje...</Title>
-              </Container>
+              <VStack flex={1} alignItems='center' px={8} pt={4}>
+                <Text alignItems={'center'} color={'gray.700'}>
+                  Nenhum agendamento para hoje...
+                </Text>
+              </VStack>
             )}
           </AnimalsSchedules>
         </SchedulesDay>
@@ -206,10 +209,12 @@ export function Schedules({ navigation }: any) {
             )
           })}
           {dataGetAnimalsDay.length <= 0 && (
-              <Container>
-                <Title>Nenhum agendamento para hoje...</Title>
-              </Container>
-            )}
+            <VStack flex={1} px={8} pt={4}>
+              <Text alignItems={'center'} color={'gray.700'}>
+                Nenhum agendamento para hoje...
+              </Text>
+            </VStack>
+          )}
         </SchedulesDetails>
       </AnimalsSchedules>
     </Container>

@@ -2,6 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { Platform, Image } from 'react-native'
 import { TextInputMask } from 'react-native-masked-text'
 import {
+  HStack,
+  VStack,
+  IconButton,
+  Icon,
+  Select,
+  Box,
+  Center,
+} from 'native-base'
+
+import {
   Container,
   Text,
   Header,
@@ -28,25 +38,25 @@ import { Picker } from '@react-native-picker/picker'
 import _ from 'underscore'
 import { Input } from '../../../components/Forms/Input'
 
-interface FormData {
-  name: string
-  register: string
-}
-interface ImageData {
-  canceled: boolean
-  height: number
-  type: string
-  uri: string
-  width: number
-  prevState: null
-}
+// interface FormData {
+//   name: string
+//   register: string
+// }
+// interface ImageData {
+//   canceled: boolean
+//   height: number
+//   type: string
+//   uri: string
+//   width: number
+//   prevState: null
+// }
 const schema = Yup.object().shape({
   name: Yup.string().required('O Nome do animal é obrigatório'),
 
   register: Yup.string().required('O register do responsável é obrigatório'),
 })
 export function CreateAnimal() {
-  const [image, setImage] = useState<ImageData | null>(null)
+  const [image, setImage] = useState()
   const [urlImage, setUrlImage] = useState('')
   const [coberturas, setCoberturas] = useState('')
   const [questions, setQuestions] = useState([])
@@ -65,12 +75,14 @@ export function CreateAnimal() {
 
   const { registerAnimals, statusRegister } = useRegister()
   const auxArray = {}
+
   for (let i = 0; i < formData.amountOfQuestions; i++) {
     auxArray[i] = i
   }
+
   const { user } = useAuth()
 
-  async function handleFormRegister(form: FormData) {
+  async function handleFormRegister(form) {
     formData.questions = questions
     const data = {
       name: form.name,
@@ -80,7 +92,16 @@ export function CreateAnimal() {
     }
     console.log('formmm', formData)
 
-    const result = await registerAnimals(form.name, form.register, urlImage, formData)
+    const result = await registerAnimals(
+      form.name,
+      form.register,
+      urlImage,
+      formData,
+    ).then((res) => {
+      Alert.alert(`Sucesso`, `${res.message}`, [
+        { text: 'OK', onPress: () => navigation.goBack() },
+      ])
+    })
     console.log('data-->', data, result)
   }
 
@@ -118,41 +139,25 @@ export function CreateAnimal() {
     }
   }
 
-  const uploadImage = async (uri: any, imageName: any) => {
+  const uploadImage = async (uri, imageName) => {
     const response = await fetch(uri)
     const blob = await response.blob()
 
     var ref = await firebase
       .storage()
-      .ref(`Animals/${user!.uid}`)
+      .ref(`Animals/${user.uid}`)
       .child(imageName)
       .put(blob)
       .then(async () => {
         const image = await firebase
           .storage()
-          .ref(`Animals/${user!.uid}`)
+          .ref(`Animals/${user.uid}`)
           .child(imageName)
           .getDownloadURL()
           .then((url) => url)
         return image
       })
 
-    //   const image = await firebase
-    //   .storage()
-    //   .ref(`Animals/${user!.uid}`)
-    //   .child(imageName)
-    //   .getDownloadURL()
-    //   .then((url) => url)
-    // console.log('image', image)
-    // return image
-
-    // var ref = firebase
-    // .storage()
-    // .ref(`Animals/${user.uid}`)
-    // .child("images"+imageName)
-    // .getDownloadURL()
-    // .then((url: any) => setImage(url));
-    // return ref.put(blob)
     return ref
   }
 
@@ -160,9 +165,9 @@ export function CreateAnimal() {
     ? Number(formData.amountOfQuestions)
     : 1
 
-  function renderQuestion(item: any, index: any, validationCode: string) {
+  function renderQuestion(item, index, validationCode) {
     questions[index] = questions[index] ? questions[index] : {}
-    console.log('questions', questions)
+    console.log('questions', validationCode)
 
     return (
       <Container>
@@ -202,7 +207,7 @@ export function CreateAnimal() {
               [index]: {
                 ...prevState[index],
                 fazenda: e,
-                validationCode
+                // validationCode
               },
             }))
           }
@@ -212,20 +217,21 @@ export function CreateAnimal() {
           value={validationCode}
           editable={false}
         /> */}
+
         <Input
           value={validationCode}
           placeholder='Código de validação'
           editable={false}
-          onChangeText={(e) =>
-            setQuestions((prevState) => ({
-                ...prevState,
-                [index]: {
-                  ...prevState[index],
-                  validationCode: e,
-                },
-            
-            }))
-          }
+          // onChangeText={(e) =>
+          //   setQuestions((prevState) => ({
+          //       ...prevState,
+          //       [index]: {
+          //         ...prevState[index],
+          //         validationCode: e,
+          //       },
+
+          //   }))
+          // }
         />
       </Container>
     )
@@ -263,26 +269,31 @@ export function CreateAnimal() {
           name='register'
           error={errors.register && errors.register.message}
         />
-        <Container>
-          <Picker
-            selectedValue={formData.amountOfQuestions}
-            onValueChange={(itemValue, itemIndex) =>
-              setFormData({ amountOfQuestions: itemValue })
-            }
-          >
-            <Picker.Item label='Número de coberturas...' value='' />
-            <Picker.Item label={`1`} value={1} />
-            <Picker.Item label={`2`} value={2} />
-            <Picker.Item label={`3`} value={3} />
-            <Picker.Item label={`4`} value={4} />
-            <Picker.Item label={`5`} value={5} />
-            <Picker.Item label={`6`} value={6} />
-            <Picker.Item label={`7`} value={7} />
-            <Picker.Item label={`8`} value={8} />
-            <Picker.Item label={`9`} value={9} />
-            <Picker.Item label={`10`} value={10} />
-          </Picker>
-        </Container>
+        {console.log(formData)}
+        <Center>
+          <Box w='full' maxW='500' px={8}>
+            <Select
+              selectedValue={formData.amountOfQuestions}
+              onValueChange={(itemValue) =>
+                setFormData({ amountOfQuestions: itemValue })
+              }
+              accessibilityLabel='Choose Service'
+              placeholder='Choose Service'
+              mt={1}
+            >
+              <Select.Item label={`1`} value={1} />
+              <Select.Item label={`2`} value={2} />
+              <Select.Item label={`3`} value={3} />
+              <Select.Item label={`4`} value={4} />
+              <Select.Item label={`5`} value={5} />
+              <Select.Item label={`6`} value={6} />
+              <Select.Item label={`7`} value={7} />
+              <Select.Item label={`8`} value={8} />
+              <Select.Item label={`9`} value={9} />
+              <Select.Item label={`10`} value={10} />
+            </Select>
+          </Box>
+        </Center>
         <Container>
           {_.map(auxArray, (item, index) => {
             let validationCode = Math.random()

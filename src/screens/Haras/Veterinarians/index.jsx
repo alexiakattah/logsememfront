@@ -1,6 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import _ from 'underscore'
-
 import {
   Container,
   NameHaras,
@@ -12,11 +10,12 @@ import {
   DivMenu,
   TextProfile,
   Icon,
+  Div,
   Name,
   Title,
   Crmv,
-  Div,
 } from './styles'
+import _ from 'underscore'
 import { MaterialIcons } from '@expo/vector-icons'
 import { Button } from '../../../components/Forms/Button'
 import { useRegister } from '../../../hooks/useRegister'
@@ -24,54 +23,62 @@ import { RefreshControl } from 'react-native'
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout))
 }
-export function AnimalsEgua({ navigation }: any) {
-  const { getAnimals, dataResponseAnimals } = useRegister()
+export function Veterinarians({ navigation }) {
+  const { getVeterinarians, dataResponseVeterinarians } = useRegister()
   const [refreshing, setRefreshing] = useState(false)
-  useEffect(() => {
-    async function loadAnimals() {
-      await getAnimals()
-    }
-    loadAnimals()
-  }, [])
 
   const onRefresh = useCallback(() => {
     setRefreshing(true)
 
-    async function loadReserveDetails() {
-      await getAnimals()
+    async function loadVeterinarians() {
+      getVeterinarians()
     }
-   
-    loadReserveDetails()
+
+    loadVeterinarians()
 
     wait(2000).then(() => setRefreshing(false))
   }, [])
+  useEffect(() => {
+    async function loadVeterinarians() {
+      await getVeterinarians()
+    }
 
+    loadVeterinarians()
+  }, [])
   return (
-    <Container refreshControl={
-      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-    }>
+    <Container
+      decelerationRate={0}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       {/* <Header>
         <Text>Veterinários</Text>
       </Header> */}
-      <Title>Meus Animais</Title>
+      <Title>Meus Veterinários</Title>
 
       <DivMenu horizontal={false}>
-        {dataResponseAnimals &&
-          _.map(dataResponseAnimals, (animal: any, index: any) => {
+        {dataResponseVeterinarians &&
+          _.map(dataResponseVeterinarians, (veterinarians, index) => {
             return (
-              <Options key={index} onPress={() => navigation.navigate('EditAnimalEgua', {
-                animal: animal
-              })}>
+              <Options
+                key={index}
+                onPress={() =>
+                  navigation.navigate('EditVeterinarian', {
+                    veterinarian: veterinarians,
+                  })
+                }
+              >
                 <DivHaras>
                   <Div>
                     <PhotoHaras
                       source={{
-                        uri: animal.urlImage,
+                        uri: 'https://s3-sa-east-1.amazonaws.com/projetos-artes/fullsize%2F2018%2F03%2F07%2F20%2FLogo-234918_70207_204757969_278263886.jpg',
                       }}
                     ></PhotoHaras>
                     <Name>
-                      <TextProfile> {animal.name}</TextProfile>
-                      <Crmv> Registro {animal.register}</Crmv>
+                      <TextProfile> {veterinarians.name}</TextProfile>
+                      <Crmv> CRMV {veterinarians.crmv}</Crmv>
                     </Name>
                   </Div>
                   <Div>
@@ -92,7 +99,7 @@ export function AnimalsEgua({ navigation }: any) {
           })}
 
         <Button
-          onPress={() => navigation.navigate('CreateAnimals')}
+          onPress={() => navigation.navigate('CreateVeterinarian')}
           title='Cadastrar'
         />
       </DivMenu>

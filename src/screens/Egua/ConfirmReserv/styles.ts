@@ -6,7 +6,7 @@ export const Container = styled.ScrollView`
   background-color: ${({ theme }) => theme.colors.background};
   padding: 15px;
 `
-export const ContainerAddress = styled.ScrollView`
+export const ContainerAddress = styled.TouchableOpacity`
   flex: 1;
 `
 export const ViewContainer = styled.View`
@@ -21,7 +21,7 @@ export const ViewContainer = styled.View`
   margin-right: 5px;
   /* margin: ${RFPercentage(4)}px; */
 `
-export const ViewContainerAddress = styled.View`
+export const ViewContainerAddress = styled.TouchableOpacity`
   flex-direction: row;
   border: 1px;
   border-color: ${({ theme }) => theme.colors.font_light};

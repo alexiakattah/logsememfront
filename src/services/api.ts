@@ -9,8 +9,9 @@ function getAPIURL() {
     //   window.location.hostname === 'oqqrcodehom.web.app'
     // ) {
     //   return 'https://us-central1-appsemem.cloudfunctions.net';
-  } else {
-    return 'https://us-central1-appsemem.cloudfunctions.net'
+  }
+   else {
+    return 'http://192.168.0.165:5000/appsemem-5aa83/us-central1'
   }
 }
 

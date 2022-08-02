@@ -1,21 +1,19 @@
 import React from 'react'
-import { Container, Logo, ContainerImage, Welcome, Text , Image} from './styles'
+import { Container, Logo, ContainerImage, Welcome, Image } from './styles'
 import { Button } from '../../components/Forms/Button'
 import { ButtonWhite } from '../../components/Forms/ButtonWhite'
 import logo from '../../assets/images/logo.png'
-
+import { Text } from 'native-base'
 import { Ionicons } from '@expo/vector-icons'
-export function Register({ navigation }: any) {
+import { BackButton } from '../../components/BackButton'
+export function Register({ navigation }) {
   return (
     <Container>
-      <Image onPress={() => navigation.navigate('Welcome')}>
-       
-       <Ionicons name='arrow-back' size={30} color='black' /> 
-      </Image>
+      <BackButton onPress={() => navigation.goBack()} />
       <ContainerImage>
         <Logo source={logo} />
       </ContainerImage>
-      <Welcome>Selecione o tipo de cadastro </Welcome>
+      <Text alignItems={'center'}>Selecione o tipo de cadastro </Text>
       <Text>Você é proprietário de uma égua ou cavalo?</Text>
       <Button
         title='Cavalo'

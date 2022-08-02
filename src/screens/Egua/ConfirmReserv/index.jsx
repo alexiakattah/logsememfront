@@ -44,17 +44,20 @@ import { useAuth } from '../../../hooks/useAuth'
 import { useRegister } from '../../../hooks/useRegister'
 import { usePayment } from '../../../hooks/usePayment'
 import { Input } from '../../../components/Forms/Input'
+import { Box, Select } from 'native-base'
 
-export function ConfirmReserv({ route }: any) {
+export function ConfirmReserv({ route, navigation }) {
   const { date, animal, itemId } = route.params
-  const referencia = useRef<ModalSelector>()
-  const [image, setImage] = useState<ImageData | null>(null)
+  const referencia = useRef()
+  const [image, setImage] = useState()
   const [urlImage, setUrlImage] = useState('')
   const [validationCode, setValidationCode] = useState('')
   const [value, setValue] = useState('')
-  const [listValue, setListValue] = useState<string>('')
+  const [listValue, setListValue] = useState('')
   const [checked, setChecked] = useState('')
-  const { user }: any = useAuth()
+  const [selectedCard, setSelectedCard] = useState({})
+  const [listCards, setListCards] = useState(false)
+  const { user } = useAuth()
   const [selectedLanguage, setSelectedLanguage] = useState({})
 
   const {
@@ -93,11 +96,11 @@ export function ConfirmReserv({ route }: any) {
       checked,
       moment(date).format('DD/MM/YYYY HH:mm:ss'),
       animal,
-      dataResponseCreditCards![0],
+      dataResponseCreditCards[0],
       value,
       urlImage,
       selectedLanguage,
-      validationCode
+      validationCode,
     )
     // if (confirmedReserve) {
     //   navigation.navigate('ReserveConfirmed')
@@ -125,19 +128,19 @@ export function ConfirmReserv({ route }: any) {
     }
   }
 
-  const uploadImage = async (uri: any, imageName: any) => {
+  const uploadImage = async (uri, imageName) => {
     const response = await fetch(uri)
     const blob = await response.blob()
 
     var ref = await firebase
       .storage()
-      .ref(`Documents/${user!.uid}`)
+      .ref(`Documents/${user.uid}`)
       .child(imageName)
       .put(blob)
       .then(async () => {
         const image = await firebase
           .storage()
-          .ref(`Documents/${user!.uid}`)
+          .ref(`Documents/${user.uid}`)
           .child(imageName)
           .getDownloadURL()
           .then((url) => url)
@@ -162,7 +165,6 @@ export function ConfirmReserv({ route }: any) {
   }
 
   const theme = useTheme()
-  const navigation = useNavigation()
 
   return (
     <Container>
@@ -229,25 +231,29 @@ export function ConfirmReserv({ route }: any) {
       </Column>
       <Margin></Margin>
       <TextLeft>Agendar reserva para qual Animal?</TextLeft>
-
-      <Picker
-        selectedValue={selectedLanguage}
-        onValueChange={(itemValue, itemIndex) => setSelectedLanguage(itemValue)}
-        
-      >
-        <Picker.Item label='Selecione...' value='' />
-        {_.map(dataResponseAnimals, (animal, index) => {
-          return <Picker.Item key={index} label={animal.name} value={animal} />
-        })}
-      </Picker>
+      <Box w='full' maxW='500' px={8}>
+        <Select
+          selectedValue={selectedLanguage}
+          onValueChange={(itemValue, itemIndex) =>
+            setSelectedLanguage(itemValue)
+          }
+        >
+          <Select.Item label='Selecione...' value='' />
+          {_.map(dataResponseAnimals, (animal, index) => {
+            return (
+              <Select.Item key={index} label={animal.name} value={animal} />
+            )
+          })}
+        </Select>
+      </Box>
       <Margin></Margin>
       <TextLeft>Código de Validação</TextLeft>
-      <Input onChangeText={(e)=>setValidationCode(e)}/>
+      <Input onChangeText={(e) => setValidationCode(e)} />
       <Margin></Margin>
       <TextLeft>Entregar em</TextLeft>
-      <ViewContainerAddress>
+      <ViewContainerAddress onPress={() => navigation.navigate('EditMyData')}>
         <ImageEndereco source={endereco} />
-        <ContainerAddress>
+        <ContainerAddress onPress={() => navigation.navigate('EditMyData')}>
           <TextLeft>{user.nameEstabelecimento}</TextLeft>
           <TextSmallAddress>
             {user.street} {user.number}, {user.neighborhood} - {user.city}/
@@ -257,27 +263,42 @@ export function ConfirmReserv({ route }: any) {
       </ViewContainerAddress>
       <Margin></Margin>
       <TextLeft>Meio de Pagamento</TextLeft>
+
       <ViewContainerAddress>
         <ImageEndereco source={card} />
         {/* <FontAwesome5 name='calendar-alt' size={24} color='black' /> */}
         <ContainerAddress>
           <TextLeft>
-            {dataResponseCreditCards &&
-            dataResponseCreditCards[0].typeCart === 'credit'
+            {selectedCard && selectedCard.typeCart === 'credit'
               ? 'Crédito'
-              : dataResponseCreditCards &&
-                dataResponseCreditCards[0].typeCart === 'debit'
+              : selectedCard && selectedCard.typeCart === 'debit'
               ? 'Débito'
               : ''}{' '}
-            {dataResponseCreditCards && dataResponseCreditCards[0].apelido
-              ? `- ${dataResponseCreditCards[0].apelido}`
+            {selectedCard && selectedCard.apelido
+              ? `- ${selectedCard.apelido}`
               : ''}
           </TextLeft>
           <TextSmallAddress>
-            {dataResponseCreditCards && dataResponseCreditCards[0].number}
+            {selectedCard && selectedCard.number}
           </TextSmallAddress>
         </ContainerAddress>
+        <Select
+          selectedValue={selectedCard.apelido}
+          borderColor={'white'}
+          onValueChange={(itemValue, itemIndex) => setSelectedCard(itemValue)}
+        >
+          {_.map(dataResponseCreditCards, (card, index) => {
+            return (
+              <Select.Item
+                key={index}
+                label={`${card.apelido} - ${card.number}`}
+                value={card}
+              />
+            )
+          })}
+        </Select>
       </ViewContainerAddress>
+      {console.log('vaiiii', selectedCard.apelido)}
 
       <Margin></Margin>
       <Div>

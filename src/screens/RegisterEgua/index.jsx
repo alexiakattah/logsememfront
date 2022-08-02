@@ -1,4 +1,4 @@
-import React , {useEffect}from 'react'
+import React, { useEffect } from 'react'
 import {
   Container,
   Welcome,
@@ -18,19 +18,7 @@ import { useForm } from 'react-hook-form'
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useAuth } from '../../hooks/useAuth'
-
-interface FormData {
-  nameAnimal: string
-  nameResponsible: string
-  numberRegister: number
-  email: string
-  password: string
-  confirmPassword: string
-  valueBotuflex: number
-  valueNoBotuflex: number
-  agency: number
-  count: number
-}
+import { BackButton } from '../../components/BackButton'
 
 const schema = Yup.object().shape({
   nameAnimal: Yup.string().required('O Nome do animal é obrigatório'),
@@ -43,12 +31,9 @@ const schema = Yup.object().shape({
   password: Yup.string().required('A senha é obrigatória'),
 })
 
-export function RegisterEgua({ navigation }: any) {
-
+export function RegisterEgua({ navigation }) {
   const { registerUserEgua, statusRegister } = useAuth()
-
- 
-
+  const { loginUser, authenticatedUser, statusLogin } = useAuth()
   const {
     control,
     handleSubmit,
@@ -57,24 +42,28 @@ export function RegisterEgua({ navigation }: any) {
     resolver: yupResolver(schema),
   })
 
-
-  async function handleFormRegister(form: FormData) {
+  async function handleFormRegister(form) {
     console.log('entrou aqui')
     const result = await registerUserEgua(
       form.nameAnimal,
       form.nameResponsible,
       form.numberRegister,
       form.email,
-      form.password
-    )
+      form.password,
+    ).then(async (res) => {
+      console.log(res)
+      await loginUser(form.email, form.password).then((res) => {
+        Alert.alert(`Sucesso`, `Cadastro Realizado com sucesso!`, [
+          { text: 'OK', onPress: () => navigation.navigate('ProfileEgua') },
+        ])
+      })
+    })
     console.log('result-->', result)
   }
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Container>
-        <Image onPress={() => navigation.navigate('Register')}>
-          <Ionicons name='arrow-back' size={30} color='black' />
-        </Image>
+        <BackButton onPress={() => navigation.goBack()} />
 
         <Welcome>Cadastro </Welcome>
         <InputForm
@@ -109,6 +98,7 @@ export function RegisterEgua({ navigation }: any) {
           name='password'
           error={errors.password && errors.password.message}
           control={control}
+          secureTextEntry={true}
           autoCorrect={false}
           placeholder='Senha'
         />

@@ -24,7 +24,7 @@ import { RefreshControl } from 'react-native'
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout))
 }
-export function Animals({ navigation }: any) {
+export function Animals({ navigation }) {
   const { getAnimals, dataResponseAnimals } = useRegister()
   const [refreshing, setRefreshing] = useState(false)
   useEffect(() => {
@@ -40,16 +40,18 @@ export function Animals({ navigation }: any) {
     async function loadReserveDetails() {
       await getAnimals()
     }
-   
+
     loadReserveDetails()
 
     wait(2000).then(() => setRefreshing(false))
   }, [])
 
   return (
-    <Container refreshControl={
-      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-    }>
+    <Container
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       {/* <Header>
         <Text>Veterinários</Text>
       </Header> */}
@@ -57,7 +59,7 @@ export function Animals({ navigation }: any) {
 
       <DivMenu horizontal={false}>
         {dataResponseAnimals &&
-          _.map(dataResponseAnimals, (animal: any, index: any) => {
+          _.map(dataResponseAnimals, (animal, index) => {
             return (
               <Options key={index}>
                 <DivHaras>

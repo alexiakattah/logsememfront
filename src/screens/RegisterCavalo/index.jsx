@@ -1,4 +1,4 @@
-import React , {useEffect}from 'react'
+import React, { useEffect } from 'react'
 import {
   Container,
   Welcome,
@@ -19,19 +19,6 @@ import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useAuth } from '../../hooks/useAuth'
 
-interface FormData {
-  // nameAnimal: string
-  nameResponsible: string
-  // numberRegister: number
-  email: string
-  password: string
-  confirmPassword: string
-  // valueBotuflex: number
-  // valueNoBotuflex: number
-  // agency: number
-  // count: number
-}
-
 const schema = Yup.object().shape({
   // nameAnimal: Yup.string().required('O Nome do animal é obrigatório'),
   nameResponsible: Yup.string().required('O Nome do responsável é obrigatório'),
@@ -43,11 +30,8 @@ const schema = Yup.object().shape({
   password: Yup.string().required('A senha é obrigatória'),
 })
 
-export function RegisterCavalo({ navigation }: any) {
-
+export function RegisterCavalo({ navigation }) {
   const { registerUserCavalo, statusRegister } = useAuth()
-
- 
 
   const {
     control,
@@ -57,15 +41,14 @@ export function RegisterCavalo({ navigation }: any) {
     resolver: yupResolver(schema),
   })
 
-
-  async function handleFormRegister(form: FormData) {
+  async function handleFormRegister(form) {
     console.log('entrou aqui')
     const result = await registerUserCavalo(
       // form.nameAnimal,
       form.nameResponsible,
       // form.numberRegister,
       form.email,
-      form.password
+      form.password,
     )
     console.log('result-->', result)
   }

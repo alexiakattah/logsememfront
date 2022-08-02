@@ -11,119 +11,33 @@ import { useAuth } from '../hooks/useAuth'
 import { auth } from '../firebase'
 import { reject } from 'underscore'
 import creditCardType from 'credit-card-type'
-interface RegisterContextProps {
-  registerVeterinarian: (
-    name: string,
-    crmv: string,
-    cpf: number,
-    email: string,
-    valueBotuflex: number,
-    password: string,
-    confirmPassword: string,
-    valueNoBotuflex: number,
-    agency: number,
-    count: number,
-  ) => Promise<unknown>
-  editVeterinarian: (
-   dataVeterinarian: object
-  ) => Promise<unknown>
-  statusRegister: string
-  searchRegister: string
-  getVeterinarians: () => Promise<unknown>
 
+export const registerContext = createContext({})
 
-  getCreditCards: () => Promise<unknown>
-  getAnimalEgua: (animalId: string) => Promise<unknown>
-  updateAnimalEgua: (
-    
-    data: object,
-  ) => Promise<unknown>
-  getCreditCardsHaras: () => Promise<unknown>
-  getVeterinarian: (harasId: string) => Promise<unknown>
-  findAnimals: (search: string) => Promise<unknown>
-  isLoading: boolean
-  getAnimals: () => Promise<unknown>
-  dataFindAnimals: DataResponseAnimals | undefined
-
-  dataResponseVeterinarians: DataResponseVeterinarians | undefined
-  dataResponseVeterinarian: DataResponseVeterinarian | object
-  dataResponseCreditCards: DataResponseCreditCards | undefined
-  dataResponseAnimals: DataResponseAnimals | undefined
-  registerAnimals: (
-    name: string,
-    register: string,
-    urlImage: string,
-    formData: object
-  ) => Promise<unknown>
-  createNewCreditCard: (
-    cpfTitular: number,
-    number: number,
-    validate: number,
-    cvv: number,
-    nameTitular: string,
-    apelido?: string,
-    typeCart?: string,
-  ) => Promise<unknown>
-  editCreditCard: (
-    data: object,
-    
-  ) => Promise<unknown>
-}
-interface DataResponseVeterinarians {
-  name: string
-  crmv: string
-}
-interface DataResponseVeterinarian {
-  valueBotuflex: string
-  valueNoBotuflex: string
-}
-interface DataResponseCreditCards {
-  number: string
-  typeCart: string
-}
-
-interface DataResponseAnimals {
-  name: string
-  register: string
-  urlImage: string
-}
-
-export const registerContext = createContext({} as RegisterContextProps)
-interface RegisterContextProviderProps {
-  children: ReactNode
-}
-export function RegisterContextProvider(
-  props: RegisterContextProviderProps,
-  { navigation }: any,
-) {
+export function RegisterContextProvider(props, { navigation }) {
   const { authenticatedUser } = useAuth()
 
   const [statusRegister, setStatusRegister] = useState('Cadastrar')
   const [searchRegister, setSearchRegister] = useState('Pesquisar')
   const [isLoading, setIsLoading] = useState(false)
-  const [dataFindAnimals, setDataFindAnimals] = useState<DataResponseAnimals>()
-  const [dataResponseVeterinarians, setDataResponseVeterinarians] =
-    useState<DataResponseVeterinarians>()
-  const [dataResponseVeterinarian, setDataResponseVeterinarian] =
-    useState<DataResponseVeterinarian>()
-  const [dataResponseCreditCards, setDataResponseCreditCards] =
-    useState<DataResponseCreditCards>()
-  const [dataResponseAnimals, setDataResponseAnimals] =
-    useState<DataResponseAnimals>()
-  const [datafindAnimalEgua, setDatafindAnimalEgua] =
-    useState<DataResponseAnimals>()
+  const [dataFindAnimals, setDataFindAnimals] = useState()
+  const [dataResponseVeterinarians, setDataResponseVeterinarians] = useState()
+  const [dataResponseVeterinarian, setDataResponseVeterinarian] = useState()
+  const [dataResponseCreditCards, setDataResponseCreditCards] = useState()
+  const [dataResponseAnimals, setDataResponseAnimals] = useState()
+  const [datafindAnimalEgua, setDatafindAnimalEgua] = useState()
 
   async function registerVeterinarian(
-    name: string,
-    crmv: string,
-    cpf: number,
-    email: string,
-    valueBotuflex: number,
-    password: string,
-    confirmPassword: string,
-    valueNoBotuflex: number,
-    agency: number,
-    count: number,
+    name,
+    crmv,
+    cpf,
+    email,
+    valueBotuflex,
+    password,
+    confirmPassword,
+    valueNoBotuflex,
+    agency,
+    count,
   ) {
     return new Promise(async (resolve, reject) => {
       setStatusRegister('Cadastrando...')
@@ -164,23 +78,17 @@ export function RegisterContextProvider(
       }
     })
   }
-  async function editVeterinarian(
-    dataVeterinarian: object
-  ) {
+  async function editVeterinarian(dataVeterinarian) {
     return new Promise(async (resolve, reject) => {
-      console.log('aquiiiiiii')
       setStatusRegister('Atualizando...')
       try {
         const authToken = await auth.getAuthUserToken()
-    
+
         let parameters = {
           data: dataVeterinarian,
           userType: 'registerHaras',
           searchFunctionality: 'updateVeterinarian',
-          harasId:
-            authenticatedUser && authenticatedUser.uid
-              ? authenticatedUser.uid
-              : '',
+          harasId: authenticatedUser && authenticatedUser.uid,
         }
         const requestConfig = {
           headers: { Authorization: authToken },
@@ -188,8 +96,10 @@ export function RegisterContextProvider(
         const { data } = await api.post('/update', parameters, requestConfig)
         if (data.success) {
           setStatusRegister('Atualizar')
-          Alert.alert(`Sucesso`, `${data.message}`, [{ text: 'OK' }])
-          resolve(data)
+          // Alert.alert(`Sucesso`, `${data.message}`, [
+          //   { text: 'OK', onPress: () => navigation.navigate('Veterinários') },
+          // ])
+          return resolve(data)
         } else {
           setStatusRegister('Atualizar')
           Alert.alert(`Atenção`, `${data.message}`, [{ text: 'OK' }])
@@ -200,15 +110,13 @@ export function RegisterContextProvider(
       }
     })
   }
-  async function editCreditCard(
-    dataCreditCard: object
-  ) {
+  async function editCreditCard(dataCreditCard) {
     return new Promise(async (resolve, reject) => {
       console.log('aquiiiiiii')
       setStatusRegister('Atualizando...')
       try {
         const authToken = await auth.getAuthUserToken()
-    
+
         let parameters = {
           data: dataCreditCard,
           userType: 'registerEgua',
@@ -236,16 +144,13 @@ export function RegisterContextProvider(
       }
     })
   }
-  async function updateAnimalEgua(
- 
-    data: object,
-  ) {
+  async function updateAnimalEgua(data) {
     return new Promise(async (resolve, reject) => {
       console.log('aquiiiiiii')
       setStatusRegister('Atualizando...')
       try {
         const authToken = await auth.getAuthUserToken()
-    
+
         let parameters = {
           data: datafindAnimalEgua,
           userType: 'registerEgua',
@@ -273,12 +178,7 @@ export function RegisterContextProvider(
       }
     })
   }
-  async function registerAnimals(
-    name: string,
-    register: string,
-    urlImage: string,
-    formData: object
-  ) {
+  async function registerAnimals(name, register, urlImage, formData) {
     return new Promise(async (resolve, reject) => {
       const authToken = await auth.getAuthUserToken()
       setStatusRegister('Cadastrando...')
@@ -287,7 +187,7 @@ export function RegisterContextProvider(
           name,
           register,
           urlImage,
-          formData
+          formData,
         }
         let parameters = {
           animal,
@@ -307,8 +207,8 @@ export function RegisterContextProvider(
 
         if (data.success) {
           setStatusRegister('Cadastrar')
-          Alert.alert(`Sucesso`, `${data.message}`, [{ text: 'OK' }])
-          resolve(data)
+
+          return resolve(data)
         } else {
           setStatusRegister('Cadastrar')
           Alert.alert(`Atenção`, `${data.message}`, [{ text: 'OK' }])
@@ -346,7 +246,7 @@ export function RegisterContextProvider(
       } catch (error) {}
     })
   }
-  async function getVeterinarian(harasId: string) {
+  async function getVeterinarian(harasId) {
     return new Promise(async (resolve, reject) => {
       const authToken = await auth.getAuthUserToken()
       try {
@@ -367,14 +267,14 @@ export function RegisterContextProvider(
         if (data.success) {
           if (data) {
             setDataResponseVeterinarian(data.data)
-console.log('aaaaaaa',dataResponseVeterinarian)
+            console.log('aaaaaaa', dataResponseVeterinarian)
             return
           }
         }
       } catch (error) {}
     })
   }
-  async function getAnimalEgua(animalId: string) {
+  async function getAnimalEgua(animalId) {
     return new Promise(async (resolve, reject) => {
       const authToken = await auth.getAuthUserToken()
       try {
@@ -394,7 +294,7 @@ console.log('aaaaaaa',dataResponseVeterinarian)
         if (data.success) {
           if (data) {
             setDataResponseVeterinarian(data.data)
-console.log('aaaaaaa',dataResponseVeterinarian)
+            console.log('aaaaaaa', dataResponseVeterinarian)
             return
           }
         }
@@ -491,7 +391,7 @@ console.log('aaaaaaa',dataResponseVeterinarian)
       }
     })
   }
-  async function findAnimals(search: string) {
+  async function findAnimals(search) {
     return new Promise(async (resolve, reject) => {
       const authToken = await auth.getAuthUserToken()
       setIsLoading(true)
@@ -512,10 +412,10 @@ console.log('aaaaaaa',dataResponseVeterinarian)
           setSearchRegister('Pesquisar')
           setIsLoading(false)
           return
-        }else{
+        } else {
           setIsLoading(false)
-        setSearchRegister('Pesquisar')
-        Alert.alert(`Atenção`, `Nenhum animal encontrado`, [{ text: 'OK' }])
+          setSearchRegister('Pesquisar')
+          Alert.alert(`Atenção`, `Nenhum animal encontrado`, [{ text: 'OK' }])
         }
       } catch (error) {
         setIsLoading(false)
@@ -526,22 +426,21 @@ console.log('aaaaaaa',dataResponseVeterinarian)
   }
 
   async function createNewCreditCard(
-    cpfTitular: number,
-    number: number,
-    validate: number,
-    cvv: number,
-    nameTitular: string,
-    apelido?: string,
-    typeCart?: string,
+    cpfTitular,
+    number,
+    validate,
+    cvv,
+    nameTitular,
+    apelido,
+    typeCart,
   ) {
     return new Promise(async (resolve, reject) => {
       const authToken = await auth.getAuthUserToken()
       setIsLoading(true)
       setStatusRegister('Cadastrando...')
-      const bandeira = creditCardType("4111")
+      const bandeira = creditCardType('4111')
       console.log('bandeiraaaa', bandeira)
       const typeCard = bandeira && bandeira[0] && bandeira[0].type
-      
 
       try {
         let form = {
@@ -552,7 +451,7 @@ console.log('aaaaaaa',dataResponseVeterinarian)
           cvv,
           nameTitular,
           apelido,
-          typeCard
+          typeCard,
         }
         let parameters = {
           form,

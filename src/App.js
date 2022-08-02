@@ -10,17 +10,17 @@ import {
   Poppins_500Medium,
   Poppins_700Bold,
 } from '@expo-google-fonts/poppins'
-import Constants from 'expo-constants';
-import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants'
+import * as Notifications from 'expo-notifications'
 import { NavigationContainer } from '@react-navigation/native'
 import { AuthContextProvider } from './contexts/AuthContext'
 import { Routes } from './routes'
-import theme from './global/styles/theme'
+import theme, { THEME } from './global/styles/theme'
 import { LogBox, Platform } from 'react-native'
 import { RegisterContextProvider } from './contexts/RegisterContext'
 import { PaymentContextProvider } from './contexts/PaymentContext'
 import { ReserveContextProvider } from './contexts/ReserveContext'
-
+import { NativeBaseProvider, StatusBar } from 'native-base'
 // LogBox.ignoreLogs(['Remote debugger'])
 
 export default function App() {
@@ -41,24 +41,29 @@ export default function App() {
         data: { data: 'goes here' },
       },
       trigger: { seconds: 2 },
-    });
+    })
   }
-  
- 
-  
+
   return (
-    <ThemeProvider theme={theme}>
-      <AuthContextProvider>
-        <RegisterContextProvider>
-          <PaymentContextProvider>
-            <ReserveContextProvider>
-              <NavigationContainer>
-                <Routes />
-              </NavigationContainer>
-            </ReserveContextProvider>
-          </PaymentContextProvider>
-        </RegisterContextProvider>
-      </AuthContextProvider>
-    </ThemeProvider>
+    <NativeBaseProvider theme={THEME}>
+      <StatusBar
+        barStyle='light-content'
+        backgroundColor='transparent'
+        translucent
+      />
+      <ThemeProvider theme={theme}>
+        <NavigationContainer>
+          <AuthContextProvider>
+            <RegisterContextProvider>
+              <PaymentContextProvider>
+                <ReserveContextProvider>
+                  <Routes />
+                </ReserveContextProvider>
+              </PaymentContextProvider>
+            </RegisterContextProvider>
+          </AuthContextProvider>
+        </NavigationContainer>
+      </ThemeProvider>
+    </NativeBaseProvider>
   )
 }

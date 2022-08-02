@@ -15,7 +15,7 @@ import {
 import { auth } from '../../../firebase'
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons'
 import { useAuth } from '../../../hooks/useAuth'
-export function Profile({ navigation }: any) {
+export function Profile({ navigation }) {
   const { signOut } = useAuth()
   return (
     <Container>
@@ -65,7 +65,7 @@ export function Profile({ navigation }: any) {
           {/* <MaterialIcons name="arrow-forward-ios" size={15} color="#474747" /> */}
         </Options>
         <Options onPress={signOut}>
-        <MaterialIcons name="logout" size={24} color="#474747" />
+          <MaterialIcons name='logout' size={24} color='#474747' />
           <TextProfile>Sair</TextProfile>
           {/* <MaterialIcons name="arrow-forward-ios" size={15} color="#474747" /> */}
         </Options>

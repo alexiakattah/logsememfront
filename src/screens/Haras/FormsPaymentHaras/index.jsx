@@ -22,7 +22,7 @@ import card from '../../../assets/images/card.png'
 
 import { useRegister } from '../../../hooks/useRegister'
 
-export function FormsPaymentHaras({ navigation }: any) {
+export function FormsPaymentHaras({ navigation }) {
   const { getCreditCardsHaras, dataResponseCreditCards } = useRegister()
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export function FormsPaymentHaras({ navigation }: any) {
 
       <DivMenu horizontal={false}>
         {dataResponseCreditCards &&
-          _.map(dataResponseCreditCards, (credtidCart: any, index) => {
+          _.map(dataResponseCreditCards, (credtidCart, index) => {
             return (
               <Options key={index}>
                 <DivHaras>

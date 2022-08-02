@@ -26,12 +26,13 @@ import { AntDesign } from '@expo/vector-icons'
 
 import _ from 'underscore'
 import { useReserve } from '../../../hooks/useReserve'
+import { Text, VStack } from 'native-base'
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout))
 }
 
-export function MyReserves({ navigation }: any) {
+export function MyReserves({ navigation }) {
   const { getReserves, dataReserves } = useReserve()
   const [refreshing, setRefreshing] = useState(false)
 
@@ -176,6 +177,14 @@ export function MyReserves({ navigation }: any) {
               </AnimalsDetails>
             )
           })}
+        {console.log('dataReserves', dataReserves)}
+        {dataReserves && dataReserves.length <= 0 && (
+          <VStack flex={1} px={8} pt={4}>
+            <Text alignItems={'center'} color={'gray.700'}>
+              Nenhuma reserva para hoje...
+            </Text>
+          </VStack>
+        )}
       </SchedulesDetails>
     </Container>
   )
