@@ -32,6 +32,8 @@ import {
   TextLeft,
   ViewContainerAddress,
   ContainerAddress,
+  ViewContainerAnimal,
+  ContainerAnimal,
   ImageEndereco,
   TextSmallAddress,
   TextTotal,
@@ -231,9 +233,32 @@ export function ConfirmReserv({ route, navigation }) {
       </Column>
       <Margin></Margin>
       <TextLeft>Agendar reserva para qual Animal?</TextLeft>
-      <Box w='full' maxW='500' px={8}>
+      <ViewContainerAnimal>
+        {/* <FontAwesome5 name='calendar-alt' size={24} color='black' /> */}
+        <ContainerAnimal>
+          <TextLeft>{selectedLanguage && selectedLanguage.name}</TextLeft>
+        </ContainerAnimal>
         <Select
-          selectedValue={selectedLanguage}
+          selectedValue={selectedLanguage.name}
+          borderColor={'white'}
+          onValueChange={(itemValue, itemIndex) =>
+            setSelectedLanguage(itemValue)
+          }
+        >
+          {_.map(dataResponseAnimals, (card, index) => {
+            return (
+              <Select.Item
+                key={index}
+                label={`${card.name} - Registro: ${card.register}`}
+                value={card}
+              />
+            )
+          })}
+        </Select>
+      </ViewContainerAnimal>
+      {/* <Box w='full' maxW='500' px={8}>
+        <Select
+          selectedValue={selectedLanguage.name}
           onValueChange={(itemValue, itemIndex) =>
             setSelectedLanguage(itemValue)
           }
@@ -245,7 +270,7 @@ export function ConfirmReserv({ route, navigation }) {
             )
           })}
         </Select>
-      </Box>
+      </Box> */}
       <Margin></Margin>
       <TextLeft>Código de Validação</TextLeft>
       <Input onChangeText={(e) => setValidationCode(e)} />
@@ -298,7 +323,6 @@ export function ConfirmReserv({ route, navigation }) {
           })}
         </Select>
       </ViewContainerAddress>
-      {console.log('vaiiii', selectedCard.apelido)}
 
       <Margin></Margin>
       <Div>

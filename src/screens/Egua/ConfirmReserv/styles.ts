@@ -9,6 +9,9 @@ export const Container = styled.ScrollView`
 export const ContainerAddress = styled.TouchableOpacity`
   flex: 1;
 `
+export const ContainerAnimal = styled.TouchableOpacity`
+  flex: 1;
+`
 export const ViewContainer = styled.View`
   flex-direction: row;
   border: 1px;
@@ -22,6 +25,16 @@ export const ViewContainer = styled.View`
   /* margin: ${RFPercentage(4)}px; */
 `
 export const ViewContainerAddress = styled.TouchableOpacity`
+  flex-direction: row;
+  border: 1px;
+  border-color: ${({ theme }) => theme.colors.font_light};
+  border-radius: 5px;
+
+  padding: 5px;
+  margin-right: 5px;
+  /* margin: ${RFPercentage(4)}px; */
+`
+export const ViewContainerAnimal = styled.TouchableOpacity`
   flex-direction: row;
   border: 1px;
   border-color: ${({ theme }) => theme.colors.font_light};
